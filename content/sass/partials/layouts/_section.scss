@@ -1,0 +1,16 @@
+$section-padding: 2rem;
+$section-padding-medium: 3rem 1.5rem;
+$section-padding-large: 5rem 2.5rem;
+
+.section {
+	display: block;
+	padding: $section-padding;
+	@media screen and (min-width: $desktop) {
+		&.size-medium {
+			padding: $section-padding-medium;
+		}
+		&.size-large {
+			padding: $section-padding-large;
+		}
+	}
+}

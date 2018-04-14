@@ -1,0 +1,131 @@
+$tag-color: $text;
+$tag-background-color: $light;
+$tag-padding: 0.3rem 0.7rem;
+$tag-radius: $radius;
+
+.tags {
+	.tag {
+		margin-bottom: 0.5em;
+	}
+}
+
+.addons {
+	.tag:first-child {
+		border-radius: $radius 0 0 $radius;
+		margin-right: -4px;
+	}
+	.tag:last-child {
+		border-radius: 0 $radius $radius 0;
+	}
+	.tag.close {
+		&::before, &::after {
+			top: 0.7rem;
+    		right: 0.3rem;
+		}
+	}
+}
+
+.tag {
+	color: $tag-color;
+	display: inline-block;
+	padding: $tag-padding;
+	font-size: $size-small;
+	background: $tag-background-color;
+	border-radius: $tag-radius;
+	vertical-align: middle;
+	&.close {
+		float: inherit;
+		padding: $size-small;
+		border: 2px solid $tag-background-color;
+		&::before, &::after {
+			width: 0.9rem;
+			top: 0.65rem;
+			right: 0.25rem;
+			background: $tag-color;
+			border: 1px solid $tag-color;
+		}
+	}
+	&.close.normal {
+		padding: $size-normal;
+		&::before, &::after {
+			width: 1.4rem;
+			top: 0.85rem;
+			right: 0.3rem;
+			border: 1.5px solid $tag-color;
+		}
+	}
+	&.close.medium {
+		padding: $size-medium;
+		&::before, &::after {
+			width: 1.9rem;
+			top: 1.1rem;
+			right: 0.25rem;
+			border: 2px solid $tag-color;
+		}
+	}
+	&.close.large {
+		padding: $size-large;
+		&::before, &::after {
+			width: 2.5rem;
+			top: 1.25rem;
+			right: 0.25rem;
+			border: 3px solid $tag-color;
+		}
+	}
+	&.black {
+		color: $white;
+		background: $black;
+	}
+	&.dark {
+		color: $white;
+		background: $dark;
+	}
+	&.light {
+		color: $white;
+		background: $light-grey;
+	}
+	&.white {
+		color: $dark;
+		background: $white;
+	}
+	&.primary {
+		color: $primary-invert;
+		background: $primary;
+	}
+	&.secondary {
+		color: $secondary-invert;
+		background: $secondary;
+	}
+	&.info {
+		color: $info-invert;
+		background: $info;
+	}
+	&.link {
+		color: $link-invert;
+		background: $link;
+	}
+	&.success {
+		color: $success-invert;
+		background: $success;
+	}
+	&.warning {
+		color: $warning-invert;
+		background: $warning;
+	}
+	&.danger {
+		color: $danger-invert;
+		background: $danger;
+	}
+	&.rounded {
+		border-radius: 999px;
+	}
+	&.normal {
+		font-size: $size-normal;
+	}
+	&.medium {
+		font-size: $size-medium;
+	}
+	&.large {
+		font-size: $size-large;
+	}
+}

@@ -1,0 +1,73 @@
+$notification-background-color: $light;
+$notification-padding: 1.25rem 1.5rem;
+$notification-radius: $radius;
+
+.notification {
+	position: relative;
+	background: $notification-background-color;
+	padding: $notification-padding;
+	border-radius: $notification-radius;
+	.close {
+		top: -0.7rem;
+		right: -1.0rem;
+	}
+	&.primary {
+		color: $primary-invert;
+		background: $primary;
+		a {
+			color: $primary-invert;
+			text-decoration: underline;
+		}
+	}
+	&.secondary {
+		color: $secondary-invert;
+		background: $secondary;
+		a {
+			color: $secondary-invert;
+			text-decoration: underline;
+		}
+	}
+	&.link {
+		color: $link-invert;
+		background: $link;
+		a {
+			color: $link-invert;
+			text-decoration: underline;
+		}
+	}
+	&.info {
+		color: $info-invert;
+		background: $info;
+		a {
+			color: $info-invert;
+			text-decoration: underline;
+		}
+	}
+	&.success {
+		color: $success-invert;
+		background: $success;
+		a {
+			color: $success-invert;
+			text-decoration: underline;
+		}
+	}
+	&.warning {
+		color: $warning-invert;
+		background: $warning;
+		a {
+			color: $warning-invert;
+			text-decoration: underline;
+		}
+	}
+	&.danger {
+		color: $danger-invert;
+		background: $danger;
+		a {
+			color: $danger-invert;
+			text-decoration: underline;
+		}
+	}
+	&:not(:last-child) {
+    	margin-bottom: 1.0rem;
+	}
+}

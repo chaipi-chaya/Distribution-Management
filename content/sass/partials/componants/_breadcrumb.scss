@@ -1,0 +1,112 @@
+$breadcrumb-height: 40px;
+$breadcrumb-link-color: $link;
+$breadcrumb-hover-color: $link-hover;
+$breadcrumb-active-color: $darker-grey;
+$breadcrumb-seperater-color: $dark-grey;
+
+.breadcrumb, 
+.breadcrumb.align-center, 
+.breadcrumb.align-left, 
+.breadcrumb.align-right {
+	ul, ol {
+		line-height: $breadcrumb-height;
+		li {
+			margin-right: 0.25rem;
+			margin-left: 0.25rem;
+			display: inline-block;
+			a {
+				color: $breadcrumb-link-color;
+			}
+			&:hover a {
+				color: $breadcrumb-hover-color;
+			}
+			&.active a {
+				color: $breadcrumb-active-color;
+			}
+			& + li::before {
+				content: "\002f";
+				margin-right: 0.5rem;
+				color: $breadcrumb-seperater-color;
+			}
+		}
+	}
+}
+
+
+.breadcrumb {
+	text-align: left;
+	font-size: $size-normal;
+	&.align-center {
+		text-align: center;
+	}
+	&.align-left {
+		text-align: left;
+	}
+	&.align-right {
+		text-align: right;
+	}
+	&.small {
+		font-size: $size-small;
+	}
+	&.medium {
+		font-size: $size-medium;
+	}
+	&.large {
+		font-size: $size-large;
+	}
+	&.greater-seperate {
+		ul, ol {
+			li {
+				& + li::before {
+					content: "\0227B";
+				}
+			}
+		}
+	}
+	&.arrow-seperate {
+		ul, ol {
+			li {
+				& + li::before {
+					content: "\02192";
+				}
+			}
+		}
+	}
+	&.dot-seperate {
+		ul, ol {
+			li {
+				& + li::before {
+					content: "\00b7";
+				}
+			}
+		}
+	}
+	&.dash-seperate {
+		ul, ol {
+			li {
+				& + li::before {
+					content: "\2013";
+				}
+			}
+		}
+	}
+	&.bullet-seperate {
+		ul, ol {
+			li {
+				& + li::before {
+					content: "\2022";
+				}
+			}
+		}
+	}
+	&.triangle-seperate {
+		ul, ol {
+			li {
+				& + li::before {
+					content: "\25b6";
+				}
+			}
+		}
+	}
+}
+

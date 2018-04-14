@@ -1,0 +1,111 @@
+$dropdown-item-hover-color: $text;
+$dropdown-item-hover-background: $light;
+$dropdown-item-active-color: $white;
+$dropdown-item-active-background: $primary;
+$dropdown-arrow-color: $link;
+$dropdown-divider-color: $text;
+$dropdown-border-color: $text;
+$dropdown-border-radius: $radius;
+$dropdown-menu-height: 2.5rem;
+$dropdown-shadow-color: $light-grey;
+
+.dropdown {
+	display: inline-block;
+	vertical-align: top;
+	height: $dropdown-menu-height;
+	margin-right: 1rem;
+	.dropdown-trigger {
+		display: inline-block;
+	}
+	.button {
+		display: flex;
+		align-items: center;
+	}
+	.dropdown-menu {
+		.dropdown-content {
+			.dropdown-item {
+				display: block;
+				color: $text;
+				padding: 0.5rem 1rem;
+				&:hover {
+					color: $dropdown-item-hover-color;
+					background: $dropdown-item-hover-background;
+				}
+				&:last-child {
+					margin-bottom: 0;
+				}
+				&.active {
+					color: $dropdown-item-active-color;
+					background: $dropdown-item-active-background;
+				}
+			}
+			.dropdown-divider {
+				border-color: $dropdown-divider-color;
+				margin: 0.5rem;
+				margin-left: 0;
+				margin-right: 0;
+			}
+		}
+	}
+	&:hover .dropdown-menu {
+		display: block;
+		margin-right: calc(-1rem - 1px);
+	}
+}
+
+.dropdown {
+	.button::after {
+		content: "";
+		display: block;
+		width: 0.6rem;
+		height: 0.6rem;
+		margin-left: 0.6rem;
+		margin-bottom: 0.2rem;
+		border-right: 3px solid $dropdown-arrow-color;
+		border-bottom: 3px solid $dropdown-arrow-color;
+    	border-radius: 2px 0px;
+		transform: rotate(45deg);
+	}
+	.dropdown-menu {
+		display: none;
+		position: relative;
+		z-index: 20;
+		border: 1px solid $dropdown-border-color;
+		margin-top: 0.2rem;
+		margin-left: 0.2rem;
+		padding: 0.5rem 0;
+		border-radius: $dropdown-border-radius;
+		background: $white;
+		box-shadow: 0.2rem 0.2rem 0.5rem $dropdown-shadow-color;
+	}
+	&.up {
+		.button::after {
+			margin-top: 0.3rem;
+			margin-bottom: 0.0rem;
+			transform: rotate(-135deg);
+		}
+		.dropdown-menu {
+			margin-left: 0;
+			transform: translate(0, calc(-100% - 2.5rem));
+		}
+	}
+	&.right {
+		.button::after {
+			margin-top: 0.2rem;
+			transform: rotate(-45deg);
+		}
+		.dropdown-menu {
+			transform: translate(calc(100% - 0.7rem), -$dropdown-menu-height);
+		}
+	}
+	&.left {
+		.button::after {
+			margin-top: 0.3rem;
+			margin-left: 0.5rem;
+			transform: rotate(-225deg);
+		}
+		.dropdown-menu {
+			transform: translate(calc(-100% - 0.3rem), -$dropdown-menu-height);
+		}
+	}
+}

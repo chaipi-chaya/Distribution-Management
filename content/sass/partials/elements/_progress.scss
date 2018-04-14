@@ -1,0 +1,55 @@
+$progress-radius: 999px;
+$progress-height: $size-normal;
+$progress-text-color: $white;
+$progress-background-color: $light;
+$progress-value-color: $text;
+
+.progress {
+	display: block;
+	font-size: $size-small;
+	height: $progress-height;
+	width: 100%;
+	text-indent: -9999px;
+	-webkit-appearance: none;
+	&:not(last-child) {
+		margin-bottom: 0.5rem;
+	}
+	&::-webkit-progress-bar {
+		background: $progress-background-color;
+		border-radius: $progress-radius;
+	}
+	&::-webkit-progress-value {
+		background: $progress-value-color;
+		border-radius: $progress-radius;
+	}
+	&.primary::-webkit-progress-value {
+		background: $primary;
+	}
+	&.secondary::-webkit-progress-value {
+		background: $secondary;
+	}
+	&.link::-webkit-progress-value {
+		background: $link;
+	}
+	&.info::-webkit-progress-value {
+		background: $info;
+	}
+	&.success::-webkit-progress-value {
+		background: $success;
+	}
+	&.warning::-webkit-progress-value {
+		background: $warning;
+	}
+	&.danger::-webkit-progress-value {
+		background: $danger;
+	}
+	&.small {
+		height: $size-small;
+	}
+	&.medium {
+		height: $size-medium;
+	}
+	&.large {
+		height: $size-large;
+	}
+}

@@ -1,0 +1,219 @@
+$nav-brand-padding: 0.6rem;
+$nav-background-color: $white;
+$nav-item-color: $primary;
+$nav-item-active-color: $white;
+$nav-item-background-color: $light;
+$nav-item-active-background-color: $primary;
+$nav-item-padding: 1.0rem 1.5rem;
+$nav-dropdown-border-color: $grey;
+$nav-dropdown-arrow-color: $primary;
+$nav-burger-raduis: $radius-small;
+$nav-burger-color: $dark;
+$nav-divider-color: $grey;
+
+.nav {
+	position: relative;
+	width: 100%;
+	background: $nav-background-color;
+	.container, .container-fluid {
+		display: flex;
+		vertical-align: middle;
+		flex-wrap: wrap;
+	}
+	.nav-burger {
+		display: none;
+		position: absolute;
+		top: 0.2rem;
+		right: 0.4rem;
+		border: 1px solid $nav-burger-color;
+		float: right;
+		width: 2.15rem;
+		height: 2.1rem;
+		margin: 0.5rem 0.4rem;
+		padding: 0.25rem 0.1rem;
+		border-radius: $nav-burger-raduis;
+		cursor: pointer;
+		span {
+			border: 0.5px solid $nav-burger-color;
+			display: block;
+			margin: 5px 0.3rem;
+		}
+		&:hover {
+			border: 1px solid $nav-background-color;
+			background: $nav-burger-color;
+			span {
+				border-color: $nav-background-color;
+				background: $nav-burger-color;
+			}
+		}
+		&.active {
+			span {
+				position: absolute;
+			}
+			span:nth-child(2) {
+				opacity: 0;
+			}
+			span:first-child {   
+				width: 1.2rem;
+				transform-origin: 0% 0%;
+    			transform: translate(4px, 0px) rotate(45deg);
+			}
+			span:last-child {
+				width: 1.2rem;
+				transform-origin: 0% 100%; 
+				transform: translate(4px, 13px) rotate(-45deg);
+			}
+		}
+	}
+	ul.nav-brand {
+		display: inline-block;
+		.nav-logo {
+			display: inline-block;
+			padding: $nav-brand-padding;
+			vertical-align: middle;
+		}
+		.nav-item {
+			display: inline-flex;
+			padding: $nav-brand-padding;
+			vertical-align: middle;
+		}
+	}
+	ul.nav-menu {
+		display: inline-block;
+	}
+	ul.level1 {
+		li.level1 {
+			a:not(.button) {
+				display: flex;
+				padding: $nav-item-padding; 
+				color: $nav-item-color;
+				&:hover {
+					background: $nav-item-background-color;
+				}
+			}
+			&.dropdown {
+				position: relative;
+				height: initial;
+				margin-right: 0;
+				> a.nav-item {
+					&::after {
+						content: "";
+						display: inline-block;
+						width: 0.6rem;
+						height: 0.6rem;
+						margin-left: 0.6rem;
+						margin-top: 0.2rem;
+						border-right: 3px solid $nav-dropdown-arrow-color;
+						border-bottom: 3px solid $nav-dropdown-arrow-color;
+						border-radius: 2px 0px;
+						transform: rotate(45deg);
+					}
+				}
+				.nav-dropdown {
+					overflow: hidden;
+					display: none;
+					position: absolute;
+					z-index: 999;
+					background: $nav-background-color;
+					box-shadow: 0.3rem 0.3rem 1.5rem $grey;
+					border-radius: $radius;
+					min-width: 180px;
+					top: 100%;
+					left: 0;
+					&.align-right {
+						right: 0;
+						left: inherit;
+					}
+					&.border {
+						border: 1px solid $nav-dropdown-border-color;
+						box-shadow: 0;
+					}
+					li.nav-item {
+						display: block;
+					}
+					.nav-divider {
+						margin: 0.5rem;
+						border-color: $nav-divider-color;
+					}
+				}
+				&:hover {
+					.nav-dropdown {
+						display: block;
+					}
+				}
+			}
+			&:not(last-child) a.button {
+				margin-right: 0.5rem;
+			}
+			&.active a:not(.button), & .level2.active a:not(.button) { 
+				color: $nav-item-active-color;
+				background: $nav-item-active-background-color;
+			}
+		}
+	}
+	.nav-menu {
+		flex: 1;
+		.nav-start {
+			display: inline-flex;
+			float: left;
+			height: 100%;
+			align-items: center;
+		}
+		.nav-end {
+			display: inline-flex;
+			float: right;
+			height: 100%;
+			align-items: center;
+		}
+	}
+	// in mobile and tablet
+	@media screen and (max-width: $tablet) {
+		.nav-burger {
+			display: block;
+			border-color: $nav-burger-color;
+			span {
+				border-color: $nav-burger-color;
+			}
+			&:hover {
+				border-color: $nav-background-color;
+				background: $nav-burger-color;
+				span {
+					border-color: $nav-background-color;
+				}
+			}
+		}
+		ul.nav-menu {
+			display: none;
+			min-width: 100%;
+			.nav-start, 
+			.nav-end {
+				display: block;
+				height: inherit;
+				width: 100%;
+				li.level1 {
+					display: block;
+					width: 100%;
+					&.dropdown {
+						> a.nav-item {
+							background: $nav-item-background-color;
+							&::after {
+								display: none;
+							}
+						}
+					}
+					.nav-dropdown {
+						display: block;
+						position: inherit;
+						box-shadow: none;
+						padding-left: 1rem;
+						width: 100%;
+					}
+					&:not(last-child) a.button {
+						margin-right: 0;
+						margin-bottom: 0.5rem;
+					}
+				}
+			}
+		}
+	}
+}

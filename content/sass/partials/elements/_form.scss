@@ -1,0 +1,415 @@
+$form-label-weight: $weight-semibold;
+$form-input-font-size: $size-normal;
+$form-input-radius: $radius;
+$form-input-placeholder-color: $grey;
+$form-input-border-color: $grey;
+$form-input-background-color: $white;
+$form-select-arrow-color: $primary;
+$form-note-size: $size-small;
+$form-in-row-label-width: 1;
+$form-in-row-input-width: 3;
+
+
+.field {
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: 0.5em;
+	.field {
+		margin-bottom: 0;
+		margin-top: -0.5rem;
+		& > .field {
+			margin-top: 0;
+			width: 100%;
+		}
+	}
+	&.cols {
+		margin-bottom: 0;
+	}
+	&.in-row {
+		.label {
+			flex: $form-in-row-label-width;
+			margin-right: 0.5rem;
+			margin-bottom: 0;
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+		.input:not(.button),select,textarea {
+			flex: $form-in-row-input-width;
+			margin-right: 0.5rem;
+			margin-bottom: 0;
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+	&.addons {
+		.input:first-child, .select:first-child select, .button:first-child {
+			border-radius: $form-input-radius 0 0 $form-input-radius;
+			margin-right: -1px;
+			margin-bottom: 0;
+		}
+		.input:last-child, .select:last-child select, .button:last-child {
+			border-radius: 0 $form-input-radius $form-input-radius 0;
+			margin-left: -1px;
+			margin-bottom: 0;
+		}
+		.input, .select select, .select, .button {
+			border-radius: 0;
+			margin-bottom: 0;
+			width: auto;
+		}
+	}
+	&.grouped {
+		.input, .select select, .select, .button {
+			margin-right: 0.3rem;
+		}
+		.input:last-child, .select:last-child select, .button:last-child {
+			margin-right: 0;
+		}
+	}
+	&.center {
+		text-align: center;
+	}
+	&.right {
+		text-align: right;
+	}
+}
+
+.label {
+	width: 100%;
+	font-weight: $form-label-weight;
+	padding: 0.3rem;
+	&.small {
+		font-size: $size-small;
+	}
+	&.medium {
+		font-size: $size-medium;
+	}
+	&.large {
+		font-size: $size-large;
+	}
+	&.expanded {
+		flex: 1;
+		width: inherit;
+	}
+	&.center {
+		text-align: center;
+	}
+	&.right {
+		text-align: right;
+	}
+}
+
+.select {
+	&.small {
+		&:not(.multiple)::after {    
+			width: 0.4rem;
+			height: 0.4rem;
+			top: 0.65em;
+			right: 0.8em;
+			border-bottom: 1px solid $form-select-arrow-color;
+			border-right: 1px solid $form-select-arrow-color;
+		}
+		select {
+			font-size: $size-small;
+		}
+	}
+	&.medium {
+		&:not(.multiple)::after {    
+			width: 0.8rem;
+			height: 0.8rem;
+			top: 0.7em;
+			right: 1.15em;
+			border-bottom: 2.5px solid #3498DB;
+			border-right: 2.5px solid #3498DB;
+		}
+		select {
+			font-size: $size-medium;
+		}
+	}
+	&.large {
+		&:not(.multiple)::after {    
+			width: 1.0rem;
+			height: 1.0rem;
+			top: 0.8em;
+    		right: 1.35em;
+			border-bottom: 3px solid $form-select-arrow-color;
+			border-right: 3px solid $form-select-arrow-color;
+		}
+		select {
+			font-size: $size-large;
+		}
+	}
+	&.expanded {
+		flex: 1;
+		width: inherit;
+	}
+	&.primary select {
+		border-color: $primary;
+	}
+	&.secondary select {
+		border-color: $secondary;
+	}
+	&.info select {
+		border-color: $info;
+	}
+	&.link select {
+		border-color: $link;
+	}
+	&.success select {
+		border-color: $success;
+	}
+	&.warning select {
+		border-color: $warning;
+	}
+	&.danger select {
+		border-color: $danger;
+	}
+	&.disabled {
+		opacity: 0.5;
+		select[disabled] {
+			background: $light;
+			cursor: not-allowed;
+			border-color: $light;
+		}
+		&::after {
+			border-color: $grey;
+		}
+	} 
+	&.rounded select {
+		border-radius: 999px;
+	}
+}
+
+.input:not(.button), textarea {
+	&.small {
+		font-size: $size-small;
+	}
+	&.medium {
+		font-size: $size-medium;
+	}
+	&.large {
+		font-size: $size-large;
+	}
+	&.center {
+		text-align: center;
+	}
+	&.right {
+		text-align: right;
+	}
+	&.expanded {
+		flex: 1;
+		width: inherit;
+	}
+	&.primary {
+		border-color: $primary;
+	}
+	&.secondary {
+		border-color: $secondary;
+	}
+	&.info {
+		border-color: $info;
+	}
+	&.link {
+		border-color: $link;
+	}
+	&.success {
+		border-color: $success;
+	}
+	&.warning {
+		border-color: $warning;
+	}
+	&.danger {
+		border-color: $danger;
+	}
+	&[disabled] {
+		background: $light;
+		opacity: 0.5;
+		cursor: not-allowed;
+		border-color: $light;
+	}
+	&.rounded {
+		border-radius: 999px;
+	}
+}
+
+.input:not(.button), textarea {
+	border: 1px solid $form-input-border-color;
+	border-radius: $form-input-radius;
+	font-size: $form-input-font-size;
+	padding: 0.3rem 0.7rem;
+	background: $form-input-background-color;
+	width: 100%;
+	&::-webkit-input-placeholder {
+	  color: $form-input-placeholder-color;
+	}
+	&::-moz-placeholder {
+	  color: $form-input-placeholder-color;
+	}
+	&:-ms-input-placeholder {
+	  color: $form-input-placeholder-color;
+	}
+	&:-moz-placeholder {
+	  color: $form-input-placeholder-color;
+	}
+}
+
+select {
+	-webkit-appearance: none; 
+	-moz-appearance: none;
+	appearance: none; 
+	border: 1px solid $form-input-border-color;
+	border-radius: $form-input-radius;
+	font-size: $form-input-font-size;
+	padding: 0.3rem 0.7rem;
+	background: $form-input-background-color;
+	cursor: pointer;
+    padding-right: 2.5em;
+}
+
+.select {
+	position: relative;
+	&:not(.multiple)::after {
+		content: "";
+		width: 0.6rem;
+		height: 0.6rem;
+		position: absolute;
+		top: 0.65em;
+		right: 1em;
+		z-index: 999;
+		pointer-events: none;
+		border-bottom: 2px solid $form-select-arrow-color;
+		border-right: 2px solid $form-select-arrow-color;
+		transform: rotate(45deg);
+	}
+	&.multiple {
+		select {
+			padding: 0;
+		}
+		option {
+			padding: 0.3rem 0.7rem;
+		}
+	}
+}
+
+.note {
+	font-size: $form-note-size;
+	width: 100%;
+	&.normal {
+		font-size: $size-normal;
+	}
+	&.medium {
+		font-size: $size-medium;
+	}
+	&.large {
+		font-size: $size-large;
+	}
+	&.center {
+		text-align: center;
+	}
+	&.right {
+		text-align: right;
+	}
+	&.primary {
+		color: $primary;
+	}
+	&.secondary {
+		color: $secondary;
+	}
+	&.info {
+		color: $info;
+	}
+	&.link {
+		color: $link;
+	}
+	&.success {
+		color: $success;
+	}
+	&.warning {
+		color: $warning;
+	}
+	&.danger {
+		color: $danger;
+	}
+}
+
+.checkbox, .radio {
+	label {
+		display: flex;
+		align-items: center;
+		input {
+			margin-right: 0.3rem;
+		}
+	}
+	&.toggle {
+		input {
+			width: 2.2rem;
+			position: relative;
+			margin-right: 0rem;
+		}
+		input::before {
+			margin-top: -2px;
+			position: absolute;
+			display: block;
+			content: "";
+			width: 28px;
+			height: 18px;
+			border-radius: 999px;
+			border: 1px solid $grey;
+			background: $grey;
+			transition: all 0.3s linear;
+		}
+		input::after {
+			margin-top: -2px;
+			position: absolute;
+			display: block;
+			content: "";
+			width: 14px;
+			height: 14px;
+			border-radius: 999px;
+			background: $white;   
+			top: 2px;
+    		left: 2px;
+			transition: all 0.1s linear;
+		}
+		input:checked {
+			&::before {
+				background: $primary;
+				border-color: $primary;
+			}
+			&::after {
+    			left: 12px;
+			}
+		}
+	}
+	label[disabled], input[disabled] {
+		opacity: 0.5;
+	}
+}
+
+.radio {
+	label {
+		margin-right: 0.7rem;
+	}
+}
+
+.file {
+	input {
+		display: none;
+	}
+	span {
+		padding: 0.5rem 0.7rem;
+		border: 1px solid $grey;
+		&.label {
+			background: $light;
+		}
+		&:nth-child(2){
+			margin-right: -1px;
+			border-radius: $radius 0 0 $radius;
+		}
+		&:last-child{
+			border-radius: 0 $radius $radius 0;
+		}
+	}
+}

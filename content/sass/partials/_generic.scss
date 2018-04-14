@@ -1,0 +1,50 @@
+$html-background-color: $white;
+$hr-margin: 1.0rem;
+$hr-margin-left: 0;
+$hr-margin-right: 0.5rem;
+$hr-border-size: 0.5px;
+$hr-border-style: solid;
+$hr-border-color: $grey;
+$hr-height: 0px;
+$p-line-height: 1.5em;
+
+html {
+	background-color: $html-background-color;
+	font-size: $size-normal;
+	font-family: $font-sans-serif;
+	min-width: 300px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	text-rendering: optimizeLegibility;
+}
+
+a {
+	color: $link;
+	cursor: pointer;
+	text-decoration: none;
+	&:hover,
+	&:focus,
+	&:active {
+		color: $link-hover;
+	}
+}
+
+strong {
+	font-weight: $weight-bold;
+}
+
+hr {
+	border: $hr-border-size;
+	border-style: $hr-border-style;
+	border-color: $hr-border-color;
+	height: $hr-height;
+	margin: $hr-margin;
+	margin-left: $hr-margin-left;
+	margin-right: $hr-margin-right;
+}
+
+* {    
+	line-height: $p-line-height;
+}
+
+

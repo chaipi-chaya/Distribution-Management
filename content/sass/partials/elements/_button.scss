@@ -1,0 +1,414 @@
+$button-border-size: 1px;
+$button-border-style: solid;
+$button-border-color: $darker-grey;
+$button-border-hover-color: $dark;
+$button-padding-top-bottom: 0.3rem;
+$button-padding-left-right: 1.0rem;
+$button-hover-background-color: $light;
+
+button,input {
+	font-size: $size-normal;
+}
+
+.button {
+    display: inline-flex;
+	color: $darker-grey;
+    padding: $button-padding-top-bottom $button-padding-left-right;
+	border: $button-border-size $button-border-style $button-border-color;
+    border-radius: $radius;
+	cursor: pointer;
+	background: $white;
+	&.static:hover {
+		cursor: inherit;
+	}
+	&:not(.static):hover {
+		color: $darker-grey;
+		border-color: $button-border-hover-color;
+		background: $button-hover-background-color;
+	}
+	&.outlined {
+		color: $darker-grey;
+		border: $button-border-size $button-border-style $darker-grey;
+		background: transparent;
+		&:not(.static):hover {
+			color: $white;
+			background: $darker-grey;
+		}
+	}
+	&.inverted {
+		color: $darker-grey;
+		border: none;
+		background: $white;
+		&:not(.static):hover {
+			color: $white;
+			background: $darker-grey;
+		}
+	}
+	&.rounded {
+		border-radius: 9999px;
+	}
+	&[disabled] {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+	&.white {
+		border: none;
+		background: $white;
+		&:hover {
+			background: $white;
+		}
+		&:not(.static):hover {
+			background: $light;
+		}
+		&.outlined {
+			color: $text;
+			border: $button-border-size $button-border-style $white;
+			background: transparent;
+			&:not(.static):hover {
+				color: $white;
+				background: $light;
+			}
+		}
+	}
+	&.light {
+		border: none;
+		color: $white;
+		background: $light-grey;
+		&:hover {
+			color: $white;
+			background: $light-grey;
+		}
+		&:not(.static):hover {
+			background: $grey;
+		}
+		&.outlined {
+			color: $light-grey;
+			border: $button-border-size $button-border-style $light-grey;
+			background: transparent;
+			&:not(.static):hover {
+				color: $white;
+				background: $light-grey;
+			}
+		} 
+		&.inverted {
+			color: $light-grey;
+			border: none;
+			background: $white;
+			&:not(.static):hover {
+				color: $white;
+				background: $light-grey;
+			}
+		}
+	}
+	&.grey {
+		border: none;
+		color: $white;
+		background: $dark-grey;
+		&:hover {
+			color: $white;
+			background: $dark-grey;
+		}
+		&:not(.static):hover {
+			color: $white;
+			background: $darker-grey;
+		}
+		&.outlined {
+			color: $dark-grey;
+			border: $button-border-size $button-border-style $dark-grey;
+			background: transparent;
+			&:not(.static):hover {
+				color: $white;
+				background: $darker-grey;
+			}
+		}
+		&.inverted {
+			color: $dark-grey;
+			border: none;
+			background: $white;
+			&:not(.static):hover {
+				color: $white;
+				background: $dark-grey;
+			}
+		}
+	}
+	&.dark {
+		border: none;
+		color: $white;
+		background: $darker-grey;
+		&:hover {
+			color: $white;
+			background: $darker-grey;
+		}
+		&.outlined {
+			color: $darker-grey;
+			border: $button-border-size $button-border-style $dark;
+			background: transparent;
+			&:not(.static):hover {
+				color: $white;
+				background: $darker-grey;
+			}
+		}
+		&.inverted {
+			color: $darker-grey;
+			border: none;
+			background: $white;
+			&:not(.static):hover {
+				color: $white;
+				background: $darker-grey;
+			}
+		}
+	}
+	&.black {
+		border: none;
+		color: $white;
+		background: $black;
+		&:hover {
+			color: $white;
+			background: $black;
+		}
+		&.outlined {
+			color: $black;
+			border: $button-border-size $button-border-style $black;
+			background: transparent;
+			&:not(.static):hover {
+				color: $white;
+				background: $black;
+			}
+		}
+		&.inverted {
+			color: $black;
+			border: none;
+			background: $white;
+			&:not(.static):hover {
+				color: $white;
+				background: $black;
+			}
+		}
+	}
+	&.text {
+		border: none;
+		text-decoration: underline;
+		&:hover {
+			color: $text;
+		}
+		&:not(.static):hover {
+			color: $text;
+			background: $text-hover;
+		}
+		&.outlined {
+			color: $text;
+			background: transparent;
+			&:not(.static):hover {
+				color: $text-invert;
+				background: $text;
+			}
+		}
+		&.inverted {
+			color: $text;
+			border: none;
+			background: $text-invert;
+			&:not(.static):hover {
+				color: $text-invert;
+				background: $text;
+			}
+		}
+	}
+	&.primary {
+		border: none;
+		color: $primary-invert;
+		background-color: $primary;
+		&:hover {
+			color: $primary-invert;
+			background-color: $primary;
+		}
+		&.outlined {
+			color: $primary;
+			border: $button-border-size $button-border-style $primary;
+			background: transparent;
+			&:not(.static):hover {
+				color: $primary-invert;
+				background: $primary;
+			}
+		}
+		&.inverted {
+			color: $primary;
+			border: none;
+			background: $primary-invert;
+			&:not(.static):hover {
+				color: $primary-invert;
+				background: $primary;
+			}
+		}
+	}
+	&.secondary {
+		border: none;
+		color: $secondary-invert;
+		background-color: $secondary;
+		&:hover {
+			color: $secondary-invert;
+			background-color: $secondary;
+		}
+		&.outlined {
+			color: $secondary;
+			border: $button-border-size $button-border-style $secondary;
+			background: transparent;
+			&:not(.static):hover {
+				color: $secondary-invert;
+				background: $secondary;
+			}
+		}
+		&.inverted {
+			color: $secondary;
+			border: none;
+			background: $secondary-invert;
+			&:not(.static):hover {
+				color: $secondary-invert;
+				background: $secondary;
+			}
+		}
+	}
+	&.info {
+		border: none;
+		color: $info-invert;
+		background-color: $info;
+		&:hover {
+			color: $info-invert;
+			background-color: $info;
+		}
+		&.outlined {
+			color: $info;
+			border: $button-border-size $button-border-style $info;
+			background: transparent;
+			&:not(.static):hover {
+				color: $info-invert;
+				background: $info;
+			}
+		}
+		&.inverted {
+			color: $info;
+			border: none;
+			background: $info-invert;
+			&:not(.static):hover {
+				color: $info-invert;
+				background: $info;
+			}
+		}
+	}
+	&.success {
+		border: none;
+		color: $success-invert;
+		background-color: $success;
+		&:hover {
+			color: $success-invert;
+			background-color: $success;
+		}
+		&.outlined {
+			color: $success;
+			border: $button-border-size $button-border-style $success;
+			background: transparent;
+			&:not(.static):hover {
+				color: $success-invert;
+				background: $success;
+			}
+		}
+		&.inverted {
+			color: $success;
+			border: none;
+			background: $success-invert;
+			&:not(.static):hover {
+				color: $success-invert;
+				background: $success;
+			}
+		}
+	}
+	&.link {
+		border: none;
+		color: $link-invert;
+		background-color: $link;
+		&:hover {
+			color: $link-invert;
+			background-color: $link;
+		}
+		&.outlined {
+			color: $link;
+			border: $button-border-size $button-border-style $link;
+			background: transparent;
+			&:not(.static):hover {
+				color: $link-invert;
+				background: $link;
+			}
+		}
+		&.inverted {
+			color: $link;
+			border: none;
+			background: $link-invert;
+			&:not(.static):hover {
+				color: $link-invert;
+				background: $link;
+			}
+		}
+	}
+	&.warning {
+		border: none;
+		color: $warning-invert;
+		background-color: $warning;
+		&:hover {
+			color: $warning-invert;
+			background-color: $warning;
+		}
+		&.outlined {
+			color: $warning;
+			border: $button-border-size $button-border-style $warning;
+			background: transparent;
+			&:not(.static):hover {
+				color: $warning-invert;
+				background: $warning;
+			}
+		}
+		&.inverted {
+			color: $warning;
+			border: none;
+			background: $warning-invert;
+			&:not(.static):hover {
+				color: $warning-invert;
+				background: $warning;
+			}
+		}
+	}
+	&.danger {
+		border: none;
+		color: $danger-invert;
+		background-color: $danger;
+		&:hover {
+			color: $danger-invert;
+			background-color: $danger;
+		}
+		&.outlined {
+			color: $danger;
+			border: $button-border-size $button-border-style $danger;
+			background: transparent;
+			&:not(.static):hover {
+				color: $danger-invert;
+				background: $danger;
+			}
+		}
+		&.inverted {
+			color: $danger;
+			border: none;
+			background: $danger-invert;
+			&:not(.static):hover {
+				color: $danger-invert;
+				background: $danger;
+			}
+		}
+	}
+	&.small {
+		font-size: $size-small;
+	}
+	&.medium {
+		font-size: $size-medium;
+	}
+	&.large {
+		font-size: $size-large;
+	}
+}

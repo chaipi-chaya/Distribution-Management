@@ -1,0 +1,24 @@
+$default-gap: $gap-2;
+
+.container {
+	display: block;
+	margin: 0 auto;
+	padding: 0 $default-gap;
+	@media screen and (max-width: $mobile) {
+		max-width: $mobile;
+	}
+	@media screen and (min-width: $mobile) and (max-width: $tablet) {
+		max-width: $tablet;
+	}
+	@media screen and (min-width: $tablet) and (max-width: $desktop) {
+		max-width: $tablet;
+	}
+	@media screen and (min-width: $desktop) and (max-width: $wide-screen) {
+		max-width: $desktop;
+	}
+	&-fluid {
+		display: block;
+		max-width: none;
+		padding: 0 $default-gap;
+	}
+}

@@ -1,0 +1,16 @@
+$dimensions: 16 24 32 48 64 96 128 256;
+
+.image {
+	display: block;
+	img {
+		display: block;
+		height: auto;
+		width: 100%;
+	}
+	@each $dimension in $dimensions {
+		&.size-#{$dimension} {
+			height: #{$dimension}px;
+		width: #{$dimension}px;
+		}
+	}
+}

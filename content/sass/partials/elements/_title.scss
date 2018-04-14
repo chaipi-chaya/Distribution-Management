@@ -1,0 +1,46 @@
+// Typo classes
+.title {
+	font-size: $size-3;
+	font-weight: $weight-bold;
+	&.size-1 {
+		font-size: $size-1;
+	}
+	&.size-2 {
+		font-size: $size-2;
+	}
+	&.size-3 {
+		font-size: $size-3;
+	}
+	&.size-4 {
+		font-size: $size-4;
+	}
+	&.size-5 {
+		font-size: $size-5;
+	}
+	&.size-6 {
+		font-size: $size-6;
+	}
+}
+
+.subtitle {
+	font-size: $size-4;
+	font-weight: $weight-normal;
+	&.size-1 {
+		font-size: $size-1;
+	}
+	&.size-2 {
+		font-size: $size-2;
+	}
+	&.size-3 {
+		font-size: $size-3;
+	}
+	&.size-4 {
+		font-size: $size-4;
+	}
+	&.size-5 {
+		font-size: $size-5;
+	}
+	&.size-6 {
+		font-size: $size-6;
+	}
+}

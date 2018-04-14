@@ -1,0 +1,106 @@
+$tabs-color: $text;
+$tabs-active-color: $white;
+$tabs-border-color: $light-grey;
+$tabs-border-radius: $radius;
+$tabs-background: $white;
+$tabs-active-background: $link;
+$tabs-hover-background: $light;
+
+.tabs {
+	ul {
+		li {
+			display: inline-block;
+			margin-right: -5px;
+			a {
+				color: $tabs-color;
+				border: 1px solid $tabs-border-color;
+				background: $tabs-background;
+				display: block;
+				padding: 1em;
+				&:hover {
+					background: $tabs-hover-background;
+				}
+			}
+			&.active a {
+				color: $tabs-active-color;
+				background: $tabs-active-background;
+				border-color: $tabs-active-background;
+			}
+			&:first-child a {
+				border-radius: $tabs-border-radius 0 0 $tabs-border-radius;
+			}
+			&:last-child a {
+				border-radius: 0 $tabs-border-radius $tabs-border-radius 0;
+			}
+		}
+	}
+	&.rounded {
+		ul li:first-child a {
+			border-radius: 999px 0 0 999px;
+		}
+		ul li:last-child a {
+			border-radius: 0 999px 999px 0;
+		}
+	}
+	&.bordered {
+		ul {
+			border-bottom: 1px solid $tabs-border-color;
+			li {
+				a {
+					border: 0;
+					border-radius: 0;
+					&:hover {
+						border-bottom: 1px solid $tabs-color;
+						background: $tabs-background;
+					}
+				}
+				&.active a {
+					color: $tabs-active-background;
+					background: $tabs-active-color;
+					border-bottom: 1px solid $tabs-active-background;
+					margin-bottom: -1px;
+				}
+			}
+		}
+	}
+	&.boxed {
+		ul {
+			border-bottom: 1px solid $tabs-border-color;
+			li {
+				margin-right: -4px;
+				a {
+					border: 0;
+					border-radius: 0;
+					&:hover {
+						border-bottom: 1px solid $tabs-color;
+						background: $tabs-background;
+						margin-bottom: -1px;
+					}
+				}
+				&.active a {
+					color: $tabs-active-background;
+					background: $tabs-active-color;
+					border: 1px solid $tabs-border-color;
+					border-bottom: 1px solid $tabs-background;
+					margin-bottom: -1px;
+					border-radius: $tabs-border-radius $tabs-border-radius 0 0;
+				}
+			}
+		}
+	}
+	&.center {
+		text-align: center;
+	}
+	&.right {
+		text-align: right;
+	}
+	&.small {
+		font-size: $size-small;
+	}
+	&.medium {
+		font-size: $size-medium;
+	}
+	&.large {
+		font-size: $size-large;
+	}
+}

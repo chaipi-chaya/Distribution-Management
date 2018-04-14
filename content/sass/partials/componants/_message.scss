@@ -1,0 +1,89 @@
+$message-border-color: $grey;
+$message-border-radius: $radius;
+$message-background-color: $light;
+$message-header-background-color: $darker-grey;
+
+.message { 
+	border: 1px solid $message-border-color;
+	border-radius: $message-border-radius;
+	background: $message-background-color;
+	&:not(last-child) {
+		margin-bottom: 1.5rem;
+	}
+	.message-header {
+		padding: 0.8rem;
+		position: relative;
+		background: $message-header-background-color;
+		color: $white;
+		p {
+			display: inline-block;
+		}
+	}
+	.message-body {
+		padding: 0.8rem;
+	}
+	&.dark {
+		border-color: $dark;
+		.message-header {
+			background-color: $dark;
+		}
+	}
+	&.primary {
+		border-color: $primary;
+		background: lighten($primary, 45%);;
+		.message-header {
+			background-color: $primary;
+		}
+	}
+	&.secondary {
+		border-color: $secondary;
+		background: lighten($secondary, 45%);;
+		.message-header {
+			background-color: $secondary;
+		}
+	}
+	&.info {
+		border-color: $info;
+		background: lighten($info, 45%);;
+		.message-header {
+			background-color: $info;
+		}
+	}
+	&.link {
+		border-color: $link;
+		background: lighten($link, 45%);;
+		.message-header {
+			background-color: $link;
+		}
+	}
+	&.success {
+		border-color: $success;
+		background: lighten($success, 45%);;
+		.message-header {
+			background-color: $success;
+		}
+	}
+	&.warning {
+		border-color: $warning;
+		background: lighten($warning, 45%);;
+		.message-header {
+			background-color: $warning;
+		}
+	}
+	&.danger {
+		border-color: $danger;
+		background: lighten($danger, 45%);;
+		.message-header {
+			background-color: $danger;
+		}
+	}
+	&.small {
+		font-size: $size-small;
+	}
+	&.medium {
+		font-size: $size-medium;
+	}
+	&.large {
+		font-size: $size-large;
+	}
+}

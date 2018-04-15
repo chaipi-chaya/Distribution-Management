@@ -1,9 +1,6 @@
-var http = require('http');
-var fs = require('fs');
+var express = require('express');
+var app = express();
 
-http.createServer(functiocn(req, res) {
-	res.writeHead(200, {'Content-Type': 'text/html'});
-	var html = fs.readFileSync(__dirname + 'index.htm', 'utf8')
-	var testMessage = 'test';
-	html = html.replace('{testMessage}', testMessage)
-}
+app.get('/', function (req, res) {
+  res.send('hello world')
+})

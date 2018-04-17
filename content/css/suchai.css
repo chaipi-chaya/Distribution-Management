@@ -1216,7 +1216,6 @@ select {
 }
 
 .table {
-  display: block;
   padding: 0px;
   border-radius: 5px;
   background: #FFFFFF;
@@ -2126,6 +2125,7 @@ select {
   transform: translate(-50%, -50%);
   background: #FFFFFF;
   z-index: 99999;
+  padding: 2rem;
 }
 .modal .close {
   position: fixed;
@@ -2520,4 +2520,16 @@ select {
 }
 .tabs.large {
   font-size: 1.5rem;
+}
+.align-center{
+    text-align: center;
+}
+.align-left{
+    text-align: left;
+}
+.align-right{
+    text-align: right;
+}
+.float-right {
+    float: right;
 }

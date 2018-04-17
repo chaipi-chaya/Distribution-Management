@@ -1,0 +1,25 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Suchai Demo!</title>
+<link rel="stylesheet" type="text/css" href="/css/suchai.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<script>
+    function modalShow(ele) {
+        ele.nextSibling.nextSibling.style.display = 'block';
+    }
+    function modalHide(ele) {
+        ele.parentElement.style.display = 'none';
+    }
+
+    function navToggle(ele) {
+        if (ele.nextSibling.nextSibling.style.display == 'none' ||
+            ele.nextSibling.nextSibling.style.display == '') {
+            ele.nextSibling.nextSibling.style.display = 'block';
+            ele.classList.add('active');
+        } else {
+            ele.nextSibling.nextSibling.style.display = 'none';
+            ele.classList.remove('active');
+        }
+
+    }
+</script>

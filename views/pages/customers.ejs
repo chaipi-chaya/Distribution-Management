@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../partials/head %>
+        <script>
+            function checkDuplicate(i) {
+                var list = [<%= idList %>];
+                var id = document.getElementsByClassName("idcustomer")[i].value;
+                var oldId = document.getElementsByClassName("oldId")[i].value;
+                console.log('i='+i);
+                console.log('list='+list);
+                console.log('oldId='+oldId);
+                console.log('id='+id);
+                console.log(list.indexOf(parseInt(id)));
+                if (list.indexOf(parseInt(id)) != -1 && id != oldId) {
+                    alert("รหัสลูกค้าซ้ำ กรุณากรอกใหม่");
+                    return false;
+                }
+                return true;
+            }
+        </script>
+    </head>
+    <body>
+        <% include ../partials/menu %>
+        <main class="section">
+				<div class="container-fluid">
+                    <section class="section">
+                        <div class="container">
+                            <h1 class="title">ลูกค้า</h1>
+                            <button class="button success button-float-right-margin-bottom" onclick="modalShow(this)">เพิ่มลูกค้า</button>
+                            <div class="modal">
+                                <div class="modal-background"  onclick="modalHide(this)"></div>
+                                <div class="modal-content">
+                                    <form method="post" action="/customers/add">
+                                        <div class="cols">
+                                            <div class="field col-6">
+                                                <label class="label label-id">รหัสลูกค้า</label>
+                                                <input class="input" type="text" name="id">
+                                            </div>
+                                            <div class="field col-6">
+                                                <label class="label label-require">ชื่อลูกค้า</label>
+                                                <input class="input" type="text" name="name">
+                                            </div>
+                                        </div>
+                                        <button class="button success float-right" type="sumbit" onclick="checkDuplicate()">บันทึก</button>
+                                    </form>
+                                </div>
+                                <button class="close large" onclick="modalHide(this)" aria-label="close"></button>
+                            </div>
+                            <table class="table striped full-width first-col-center bordered hoverable">
+                                <thead>
+                                    <tr>
+                                        <th width=100>รหัสลูกค้า</th>
+                                        <th>ชื่อลูกค้า</th>
+                                        <th width=150></th>
+                                        <th width=100></th>
+                                        <th width=100></th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <% for(var i=0; i<customers.length; i++) {%>
+                                        <tr>
+                                            <th><%= customers[i].idcustomer %></th>
+                                            <td><%= customers[i].name %></td>
+                                            <td class="align-center">
+                                                <a class="button info" href="branchs/<%= customers[i].idcustomer %>">จัดการสาขา</a>
+                                            </td>
+                                            <td class="align-center">
+                                                <a class="button warning" onclick="modalShow(this)">แก้ไข</a>
+                                                <div class="modal">
+                                                    <div class="modal-background" onclick="modalHide(this)"></div>
+                                                    <div class="modal-content">
+                                                        <form method="post" action="/customers/edit" onsubmit="return checkDuplicate(<%= i %>)">
+                                                            <input class="display-none oldId" type="text" name="oldId" value="<%= customers[i].idcustomer %>">
+                                                            <div class="cols">
+                                                                <div class="field col-6">
+                                                                    <label class="label label-id">รหัสลูกค้า</label>
+                                                                    <input class="input idcustomer" type="text" name="id" value="<%= customers[i].idcustomer %>">
+                                                                </div>
+                                                                <div class="field col-6">
+                                                                    <label class="label label-require">ชื่อลูกค้า</label>
+                                                                    <input class="input namecustomer" type="text" name="name" value="<%= customers[i].name %>">
+                                                                </div>
+                                                            </div>
+                                                            <button class="button success float-right" type="sumbit">บันทึก</button>
+                                                        </form>
+                                                    </div>
+                                                    <button class="close large" onclick="modalHide(this)" aria-label="close"></button>
+                                                </div>
+                                            </td>
+                                            <td class="align-center">
+                                                <form method="post" action="/customers/del">
+                                                    <input class="display-none" type="text" name="id" value="<%= customers[i].idcustomer %>">
+                                                    <button class="button danger" type="sumbit">ลบ</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+        </main>
+    </body>
+        

@@ -1,0 +1,33 @@
+.button-float-right-margin-bottom {
+    float: right;
+    margin-bottom: 10px;
+}
+
+.button-float-right-margin-top {
+    float: right;
+    margin-top: 10px;
+}
+
+.label-require:after {
+    content: "*ต้องการ";
+    font-size: 0.75rem;
+    color: red;
+    font-weight: 300;
+    margin-left: 5px;
+}
+
+.label-id:after {
+    content: "ใส่แต่ตัวเลข ถ้าไม่ใส่ระบบจะทำให้ ไม่สามารถซ้ำได้";
+    font-size: 0.75rem;
+    color: #4F5866;
+    font-weight: 300;
+    margin-left: 5px;
+}
+
+.display-none {
+    display: none;
+}
+
+.modal .modal-content {
+    width: 80%;
+}

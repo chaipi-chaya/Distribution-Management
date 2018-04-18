@@ -3,20 +3,32 @@
     <head>
         <% include ../partials/head %>
         <script>
-            function checkDuplicate(i) {
+            function checkDuplicate(i, type) {
                 var list = [<%= idList %>];
-                var id = document.getElementsByClassName("idcustomer")[i].value;
-                var oldId = document.getElementsByClassName("oldId")[i].value;
-                console.log('i='+i);
-                console.log('list='+list);
-                console.log('oldId='+oldId);
-                console.log('id='+id);
-                console.log(list.indexOf(parseInt(id)));
-                if (list.indexOf(parseInt(id)) != -1 && id != oldId) {
-                    alert("รหัสลูกค้าซ้ำ กรุณากรอกใหม่");
-                    return false;
+                if (type == 'update') {
+                    var id = document.getElementsByClassName("idcustomer")[i].value;
+                    var oldId = document.getElementsByClassName("oldId")[i].value;
+                    console.log('i='+i);
+                    console.log('list='+list);
+                    console.log('oldId='+oldId);
+                    console.log('id='+id);
+                    console.log(list.indexOf(parseInt(id)));
+                    if (list.indexOf(parseInt(id)) != -1 && id != oldId) {
+                        alert("รหัสลูกค้าซ้ำ กรุณากรอกใหม่");
+                        return false;
+                    }
+                    return true;
+                } else if (type == 'create') {
+                    var id = document.getElementsByClassName("new-idcustomer")[0].value;
+                    console.log('list='+list);
+                    console.log('id='+id);
+                    console.log(list.indexOf(parseInt(id)));
+                    if (list.indexOf(parseInt(id)) != -1) {
+                        alert("รหัสลูกค้าซ้ำ กรุณากรอกใหม่");
+                        return false;
+                    }
+                    return true;
                 }
-                return true;
             }
         </script>
     </head>
@@ -31,11 +43,11 @@
                             <div class="modal">
                                 <div class="modal-background"  onclick="modalHide(this)"></div>
                                 <div class="modal-content">
-                                    <form method="post" action="/customers/add">
+                                    <form method="post" action="/customers/add" onsubmit="return checkDuplicate(-1, 'create')">
                                         <div class="cols">
                                             <div class="field col-6">
                                                 <label class="label label-id">รหัสลูกค้า</label>
-                                                <input class="input" type="text" name="id">
+                                                <input class="input new-idcustomer" type="text" name="id">
                                             </div>
                                             <div class="field col-6">
                                                 <label class="label label-require">ชื่อลูกค้า</label>
@@ -79,7 +91,7 @@
                                                 <div class="modal">
                                                     <div class="modal-background" onclick="modalHide(this)"></div>
                                                     <div class="modal-content">
-                                                        <form method="post" action="/customers/edit" onsubmit="return checkDuplicate(<%= i %>)">
+                                                        <form method="post" action="/customers/edit" onsubmit="return checkDuplicate(<%= i %>, 'update')">
                                                             <input class="display-none oldId" type="text" name="oldId" value="<%= customers[i].idcustomer %>">
                                                             <div class="cols">
                                                                 <div class="field col-6">

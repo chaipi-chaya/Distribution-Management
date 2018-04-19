@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../partials/head %>
+        <script>
+//            function checkDuplicate(i, type) {
+//                var list = [];
+//                if (type == 'update') {
+//                    var id = document.getElementsByClassName("idbranch")[i].value;
+//                    var oldId = document.getElementsByClassName("oldId")[i].value;
+//                    if (list.indexOf(parseInt(id)) != -1 && id != oldId) {
+//                        alert("รหัสสาขาซ้ำ กรุณากรอกใหม่");
+//                        return false;
+//                    }
+//                    return true;
+//                } else if (type == 'create') {
+//                    var id = document.getElementsByClassName("new-idbranch")[0].value;
+//                    if (list.indexOf(parseInt(id)) != -1) {
+//                        alert("รหัสสาขาซ้ำ กรุณากรอกใหม่");
+//                        return false;
+//                    }
+//                    return true;
+//                }
+//            }
+        </script>
+    </head>
+    <body>
+        <% include ../partials/menu %>
+        <main class="section">
+            <div class="container-fluid">
+                <section class="section">
+                    <div class="container">
+                        <h1 class="title">สาขาของ <%= customerName %></h1>
+                        <button class="button success button-float-right-margin-bottom" onclick="modalShow(this)">เพิ่มสาขา</button>
+                        <div class="modal">
+                            <div class="modal-background" onclick="modalHide(this)"></div>
+                            <div class="modal-content">
+                                <form method="post" action="/branchs/add">
+                                    <input class="display-none idcustomer" type="text" name="idcustomer" value="<%= customerId %>">
+                                    <div class="cols">
+                                        <div class="field col-3">
+                                            <label class="label">รหัสสาขา</label>
+                                            <input class="input new-idbranch" type="number" name="idbranch">
+                                        </div>
+                                        <div class="field col-3">
+                                            <label class="label label-require">ชื่อสาขา</label>
+                                            <input class="input" type="text" name="name" required>
+                                        </div>
+                                        <div class="field col-3">
+                                            <label class="label label-require">ละติจูด (ค่าประมาน 13)</label>
+                                            <input class="input" type="text" name="location_lat" required>
+                                        </div>
+                                        <div class="field col-3">
+                                            <label class="label label-require">ลองติจูด (ค่าประมาน 100)</label>
+                                            <input class="input" type="text" name="location_lon" required>
+                                        </div>
+                                    </div>
+                                    <button class="button success float-right" type="sumbit">บันทึก</button>
+                                </form>
+                            </div>
+                            <button class="close large" onclick="modalHide(this)" aria-label="close"></button>
+                        </div>
+                        <table class="table striped full-width first-col-center bordered hoverable">
+                            <thead>
+                                <tr>
+                                    <th width=100>รหัสสาขา</th>
+                                    <th>ชื่อสาขา</th>
+                                    <th>ที่อยู่</th>
+                                    <th width=150></th>
+                                    <th width=100></th>
+                                    <th width=100></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <% for(var i=0; i<branchs.length; i++) {%>
+                                    <tr>
+                                        <th><%= branchs[i].idbranch %></th>
+                                        <td><%= branchs[i].name %></td>
+                                        <td><%= branchs[i].location_lat %>, <%= branchs[i].location_lon %></td>
+                                        <td class="align-center">
+                                            <a class="button info" href="products/<%= branchs[i].id %>-<%= branchs[i].name %>-<%= customerName %>">จัดการสินค้า</a>
+                                        </td>
+                                        <td class="align-center">
+                                            <a class="button warning" onclick="modalShow(this)">แก้ไข</a>
+                                            <div class="modal">
+                                                <div class="modal-background" onclick="modalHide(this)"></div>
+                                                <div class="modal-content">
+                                                    <form method="post" action="/branchs/edit">
+                                                        <input class="display-none id" type="text" name="id" value="<%= branchs[i].id %>">
+                                                        <div class="cols">
+                                                            <div class="field col-3">
+                                                                <label class="label">รหัสลูกค้า</label>
+                                                                <input class="input idbranch" type="text" name="idbranch" value="<%= branchs[i].idbranch %>">
+                                                            </div>
+                                                            <div class="field col-3">
+                                                                <label class="label label-require">ชื่อลูกค้า</label>
+                                                                <input class="input namebranch" type="text" name="name" value="<%= branchs[i].name %>" required>
+                                                            </div>
+                                                            <div class="field col-3">
+                                                                <label class="label label-require">ละติจูด (ค่าประมาน 13)</label>
+                                                                <input class="input location_lat" type="text" name="location_lat" value="<%= branchs[i].location_lat %>" required>
+                                                            </div>
+                                                            <div class="field col-3">
+                                                                <label class="label label-require">ลองติจูด (ค่าประมาน 100)</label>
+                                                                <input class="input location_lon" type="text" name="location_lon" value="<%= branchs[i].location_lon %>" required>
+                                                            </div>
+                                                        </div>
+                                                        <button class="button success float-right" type="sumbit">บันทึก</button>
+                                                    </form>
+                                                </div>
+                                                <button class="close large" onclick="modalHide(this)" aria-label="close"></button>
+                                            </div>
+                                        </td>
+                                        <td class="align-center">
+                                            <form method="post" action="/branchs/del">
+                                                <input class="display-none" type="text" name="id" value="<%= branchs[i].id %>">
+                                                <button class="button danger" type="sumbit">ลบ</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </body>
+</html>

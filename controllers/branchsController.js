@@ -1,8 +1,4 @@
-var bodyParser = require('body-parser');
-
 module.exports = function(app, con) {
-    
-    app.use(bodyParser.json());
     
     app.get('/branchs/:id-:customername', function (req, res) {
 
@@ -22,7 +18,6 @@ module.exports = function(app, con) {
     app.post('/branchs/add', function (req, res) {
 
         var branch = {
-            id : req.body.id,
             idbranch : req.body.idbranch,
             idcustomer : req.body.idcustomer,
             location_lat : req.body.location_lat,

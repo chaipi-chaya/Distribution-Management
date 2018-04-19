@@ -1,8 +1,4 @@
-var bodyParser = require('body-parser');
-
 module.exports = function(app, con) {
-    
-    app.use(bodyParser.json());
     
     app.get('/customers', function (req, res) {
 

@@ -3,25 +3,13 @@
     <head>
         <% include ../partials/head %>
         <script>
-//            function checkDuplicate(i, type) {
-//                var list = [];
-//                if (type == 'update') {
-//                    var id = document.getElementsByClassName("idbranch")[i].value;
-//                    var oldId = document.getElementsByClassName("oldId")[i].value;
-//                    if (list.indexOf(parseInt(id)) != -1 && id != oldId) {
-//                        alert("รหัสสาขาซ้ำ กรุณากรอกใหม่");
-//                        return false;
-//                    }
-//                    return true;
-//                } else if (type == 'create') {
-//                    var id = document.getElementsByClassName("new-idbranch")[0].value;
-//                    if (list.indexOf(parseInt(id)) != -1) {
-//                        alert("รหัสสาขาซ้ำ กรุณากรอกใหม่");
-//                        return false;
-//                    }
-//                    return true;
-//                }
-//            }
+            function checkDel() {
+                if (confirm('ต้องการลบใช่หรือไม่')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         </script>
     </head>
     <body>
@@ -88,7 +76,7 @@
                                         <td><%= branchs[i].name %></td>
                                         <td><%= branchs[i].location_lat %>, <%= branchs[i].location_lon %></td>
                                         <td class="align-center">
-                                            <a class="button info" href="products/<%= branchs[i].id %>-<%= branchs[i].name %>-<%= customerName %>">จัดการสินค้า</a>
+                                            <a class="button info" href="product_management/<%= branchs[i].id %>-<%= branchs[i].name %>-<%= customerName %>">จัดการสินค้า</a>
                                         </td>
                                         <td class="align-center">
                                             <a class="button warning" onclick="modalShow(this)">แก้ไข</a>
@@ -122,7 +110,7 @@
                                             </div>
                                         </td>
                                         <td class="align-center">
-                                            <form method="post" action="/branchs/del">
+                                            <form method="post" action="/branchs/del" onsubmit="return checkDel()">
                                                 <input class="display-none" type="text" name="id" value="<%= branchs[i].id %>">
                                                 <button class="button danger" type="sumbit">ลบ</button>
                                             </form>

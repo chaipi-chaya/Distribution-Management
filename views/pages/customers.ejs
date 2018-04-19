@@ -22,6 +22,14 @@
                     return true;
                 }
             }
+            
+            function checkDel() {
+                if (confirm('ต้องการลบใช่หรือไม่')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         </script>
     </head>
     <body>
@@ -39,7 +47,7 @@
                                     <div class="cols">
                                         <div class="field col-6">
                                             <label class="label label-id">รหัสลูกค้า</label>
-                                            <input class="input new-idcustomer" type="text" name="id" required>
+                                            <input class="input new-idcustomer" type="number" name="id" required>
                                         </div>
                                         <div class="field col-6">
                                             <label class="label label-require">ชื่อลูกค้า</label>
@@ -102,7 +110,7 @@
                                             </div>
                                         </td>
                                         <td class="align-center">
-                                            <form method="post" action="/customers/del">
+                                            <form method="post" action="/customers/del" onsubmit="return checkDel()">
                                                 <input class="display-none" type="text" name="id" value="<%= customers[i].idcustomer %>">
                                                 <button class="button danger" type="sumbit">ลบ</button>
                                             </form>

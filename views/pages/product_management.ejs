@@ -18,31 +18,19 @@
             <div class="container-fluid">
                 <section class="section">
                     <div class="container">
-                        <h1 class="title">สินค้า</h1>
+                        <h1 class="title">จัดการสินค้าของ <%= customerName %> สาขา <%= branchName %></h1>
                         <button class="button success button-float-right-margin-bottom" onclick="modalShow(this)">เพิ่มสินค้า</button>
                         <div class="modal">
                             <div class="modal-background" onclick="modalHide(this)"></div>
                             <div class="modal-content">
-                                <form method="post" action="/products/add">
+                                <form method="post" action="/product_management/add">
                                     <div class="cols">
-                                        <div class="field col-3">
-                                            <label class="label">รหัสสินค้า</label>
-                                            <input class="input new-idproduct" type="number" name="idproduct">
-                                        </div>
                                         <div class="field col-3">
                                             <label class="label label-require">ชื่อสินค้า</label>
                                             <input class="input" type="text" name="name" required>
                                         </div>
-                                        <div class="field col-3">
-                                            <label class="label label-require">น้ำหนักสินค้า(กิโลกรัม)</label>
-                                            <input class="input" type="text" name="weight" required>
-                                        </div>
-                                        <div class="field col-3">
-                                            <label class="label label-require">จำนวนสั่งขั้นต่ำ</label>
-                                            <input class="input" type="text" name="minimum" required>
-                                        </div>
+                                        <button class="button success float-right" type="sumbit">บันทึก</button>
                                     </div>
-                                    <button class="button success float-right" type="sumbit">บันทึก</button>
                                 </form>
                             </div>
                             <button class="close large" onclick="modalHide(this)" aria-label="close"></button>
@@ -52,16 +40,12 @@
                                 <tr>
                                     <th width=100>รหัสสินค้า</th>
                                     <th>ชื่อสินค้า</th>
-                                    <th>น้ำหนักสินค้า(กิโลกรัม)</th>
-                                    <th>จำนวนสั่งขั้นต่ำ</th>
                                     <th width=100></th>
                                     <th width=100></th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th></th>
-                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -73,42 +57,28 @@
                                     <tr>
                                         <th><%= products[i].idproduct %></th>
                                         <td><%= products[i].name %></td>
-                                        <td><%= products[i].weight_per_bottle %></td>
-                                        <td><%= products[i].minimum_order_per_bottle %></td>
                                         <td class="align-center">
                                             <a class="button warning" onclick="modalShow(this)">แก้ไข</a>
                                             <div class="modal">
                                                 <div class="modal-background" onclick="modalHide(this)"></div>
                                                 <div class="modal-content">
-                                                    <form method="post" action="/products/edit">
+                                                    <form method="post" action="/branchs/edit">
                                                         <input class="display-none id" type="text" name="id" value="<%= products[i].id %>">
                                                         <div class="cols">
                                                             <div class="field col-3">
-                                                                <label class="label">รหัสลูกค้า</label>
-                                                                <input class="input idproduct" type="text" name="idproduct" value="<%= products[i].idproduct %>">
+                                                                <label class="label label-require">ชื่อสินค้า</label>
+                                                                <input class="input namebranch" type="text" name="name" value="<%= products[i].name %>" required>
                                                             </div>
-                                                            <div class="field col-3">
-                                                                <label class="label label-require">ชื่อลูกค้า</label>
-                                                                <input class="input nameproduct" type="text" name="name" value="<%= products[i].name %>" required>
-                                                            </div>
-                                                            <div class="field col-3">
-                                                                <label class="label label-require">น้ำหนักสินค้า(กิโลกรัม)</label>
-                                                                <input class="input weight_per_bottle" type="text" name="weight" value="<%= products[i].weight_per_bottle %>" required>
-                                                            </div>
-                                                            <div class="field col-3">
-                                                                <label class="label label-require">จำนวนสั่งขั้นต่ำ</label>
-                                                                <input class="input minimum_order_per_bottle" type="text" name="minimum" value="<%= products[i].minimum_order_per_bottle %>" required>
-                                                            </div>
+                                                            <button class="button success float-right" type="sumbit">บันทึก</button>
                                                         </div>
-                                                        <button class="button success float-right" type="sumbit">บันทึก</button>
                                                     </form>
                                                 </div>
                                                 <button class="close large" onclick="modalHide(this)" aria-label="close"></button>
                                             </div>
                                         </td>
                                         <td class="align-center">
-                                            <form method="post" action="/products/del" onsubmit="return checkDel()">
-                                                <input class="display-none" type="text" name="id" value="<%= products[i].id %>">
+                                            <form method="post" action="/branchs/del" onsubmit="return checkDel()">
+                                                <input class="display-none" type="text" name="id" value="<%= products[i].idbranchs_products %>">
                                                 <button class="button danger" type="sumbit">ลบ</button>
                                             </form>
                                         </td>

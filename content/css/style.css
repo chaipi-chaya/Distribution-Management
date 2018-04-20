@@ -39,3 +39,29 @@
 .modal .modal-content {
     width: 80%;
 }
+
+/* consider replace in css framework */
+.select {
+    width: 100%;
+}
+
+.select select {
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

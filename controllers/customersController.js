@@ -29,11 +29,11 @@ module.exports = function(app, con) {
             con.query('INSERT INTO customers (idcustomer, name) VALUES (' + customer.id + ',"' + customer.name + '");',
                 function(err) {
                     if(err) throw err;
+                    res.redirect(req.get('referer'));
                 }
             );
         }
 
-        res.redirect(req.get('referer'));
 
     });
 
@@ -46,10 +46,10 @@ module.exports = function(app, con) {
         con.query('DELETE FROM customers WHERE idcustomer=' + customer.id + ';',
             function(err) {
                 if(err) throw err;
+                res.redirect(req.get('referer'));
             }
         );
 
-        res.redirect(req.get('referer'));
 
     });
 

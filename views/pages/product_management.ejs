@@ -23,11 +23,18 @@
                         <div class="modal">
                             <div class="modal-background" onclick="modalHide(this)"></div>
                             <div class="modal-content">
-                                <form method="post" action="/product_management/add">
+                                <form method="post" action="/branchs/product_management/add">
+                                    <input class="display-none idbranch" type="text" name="idbranch" value="<%= branchId %>">
                                     <div class="cols">
-                                        <div class="field col-3">
+                                        <div class="field col-6">
                                             <label class="label label-require">ชื่อสินค้า</label>
-                                            <input class="input" type="text" name="name" required>
+                                            <div class="select">
+                                                <select name="idproduct" required>
+                                                    <% for(var j=0; j<products.length; j++) {%>
+                                                    <option value="<%= products[j].id %>"><%= products[j].name %></option>
+                                                    <% } %>
+                                                </select>
+                                            </div>
                                         </div>
                                         <button class="button success float-right" type="sumbit">บันทึก</button>
                                     </div>
@@ -53,21 +60,28 @@
                                 </tr>
                             </tfoot>
                             <tbody>
-                                <% for(var i=0; i<products.length; i++) {%>
+                                <% for(var i=0; i<branchs_products.length; i++) {%>
                                     <tr>
-                                        <th><%= products[i].idproduct %></th>
-                                        <td><%= products[i].name %></td>
+                                        <th><%= branchs_products[i].idproduct %></th>
+                                        <td><%= branchs_products[i].name %></td>
                                         <td class="align-center">
                                             <a class="button warning" onclick="modalShow(this)">แก้ไข</a>
                                             <div class="modal">
                                                 <div class="modal-background" onclick="modalHide(this)"></div>
-                                                <div class="modal-content">
-                                                    <form method="post" action="/branchs/edit">
-                                                        <input class="display-none id" type="text" name="id" value="<%= products[i].id %>">
+                                                <div class="modal-content align-left">
+                                                    <form method="post" action="/branchs/product_management/edit">
+                                                        <input class="display-none id" type="text" name="id" value="<%= branchs_products[i].idbranchs_products %>">
+                                                        <input class="display-none idbranch" type="text" name="idbranch" value="<%= branchId %>">
                                                         <div class="cols">
-                                                            <div class="field col-3">
-                                                                <label class="label label-require">ชื่อสินค้า</label>
-                                                                <input class="input namebranch" type="text" name="name" value="<%= products[i].name %>" required>
+                                                            <div class="field col-6">
+                                                                    <label class="label label-require">ชื่อสินค้า</label>
+                                                                    <div class="select">
+                                                                        <select name="idproduct" required>
+                                                                            <% for(var j=0; j<products.length; j++) {%>
+                                                                            <option value="<%= products[j].id %>"><%= products[j].name %></option>
+                                                                            <% } %>
+                                                                        </select>
+                                                                    </div>
                                                             </div>
                                                             <button class="button success float-right" type="sumbit">บันทึก</button>
                                                         </div>
@@ -77,8 +91,8 @@
                                             </div>
                                         </td>
                                         <td class="align-center">
-                                            <form method="post" action="/branchs/del" onsubmit="return checkDel()">
-                                                <input class="display-none" type="text" name="id" value="<%= products[i].idbranchs_products %>">
+                                            <form method="post" action="/branchs/product_management/del" onsubmit="return checkDel()">
+                                                <input class="display-none" type="text" name="id" value="<%= branchs_products[i].idbranchs_products %>">
                                                 <button class="button danger" type="sumbit">ลบ</button>
                                             </form>
                                         </td>

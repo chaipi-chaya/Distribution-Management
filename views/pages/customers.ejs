@@ -4,19 +4,33 @@
         <% include ../partials/head %>
         <script>
             function checkDuplicate(i, type) {
-                var list = [<%= idList %>];
+                var listId = [];
+                var listName = [];
+                <% for(var i=0; i<customers.length; i++) {%>
+                    listId.push(<%= customers[i].idcustomer %>);
+                    listName.push("<%= customers[i].name %>");
+                <% } %>
                 if (type == 'update') {
-                    var id = document.getElementsByClassName("idcustomer")[i].value;
-                    var oldId = document.getElementsByClassName("oldId")[i].value;
-                    if (list.indexOf(parseInt(id)) != -1 && id != oldId) {
+                    var id = document.getElementsByClassName("editid")[i].value;
+                    var oldId = document.getElementsByClassName("oldid")[i].value;
+                    var name = document.getElementsByClassName("editname")[i].value;
+                    var oldName = document.getElementsByClassName("oldname")[i].value;
+                    if (listId.indexOf(parseInt(id)) != -1  && id != oldId ) {
                         alert("รหัสลูกค้าซ้ำ กรุณากรอกใหม่");
+                        return false;
+                    } else if (listName.indexOf(name) != -1 && name != oldName) {
+                        alert("ชื่อลูกค้าซ้ำ กรุณากรอกใหม่");
                         return false;
                     }
                     return true;
                 } else if (type == 'create') {
-                    var id = document.getElementsByClassName("new-idcustomer")[0].value;
-                    if (list.indexOf(parseInt(id)) != -1) {
+                    var id = document.getElementsByClassName("newid")[0].value;
+                    var name = document.getElementsByClassName("newname")[0].value;
+                    if (listId.indexOf(parseInt(id)) != -1 ) {
                         alert("รหัสลูกค้าซ้ำ กรุณากรอกใหม่");
+                        return false;
+                    } else if (listName.indexOf(name) != -1 ) {
+                        alert("ชื่อลูกค้าซ้ำ กรุณากรอกใหม่");
                         return false;
                     }
                     return true;
@@ -47,14 +61,14 @@
                                     <div class="cols">
                                         <div class="field col-6">
                                             <label class="label label-id">รหัสลูกค้า</label>
-                                            <input class="input new-idcustomer" type="number" name="id" required>
+                                            <input class="input newid" type="number" name="id" required>
                                         </div>
                                         <div class="field col-6">
-                                            <label class="label label-require">ชื่อลูกค้า</label>
-                                            <input class="input" type="text" name="name" required>
+                                            <label class="label label-no-duplicate">ชื่อลูกค้า<span class="label-require"></span></label>
+                                            <input class="input newname" type="text" name="name" required>
                                         </div>
                                     </div>
-                                    <button class="button success float-right" type="sumbit" onclick="checkDuplicate()">บันทึก</button>
+                                    <button class="button success float-right" type="sumbit">บันทึก</button>
                                 </form>
                             </div>
                             <button class="close large" onclick="modalHide(this)" aria-label="close"></button>
@@ -90,17 +104,18 @@
                                             <a class="button warning" onclick="modalShow(this)">แก้ไข</a>
                                             <div class="modal">
                                                 <div class="modal-background" onclick="modalHide(this)"></div>
-                                                <div class="modal-content">
+                                                <div class="modal-content align-left">
                                                     <form method="post" action="/customers/edit" onsubmit="return checkDuplicate(<%= i %>, 'update')">
-                                                        <input class="display-none oldId" type="text" name="oldId" value="<%= customers[i].idcustomer %>">
+                                                        <input class="display-none oldid" type="text" name="oldId" value="<%= customers[i].idcustomer %>">
+                                                        <input class="display-none oldname" type="text" name="oldName" value="<%= customers[i].name %>">
                                                         <div class="cols">
                                                             <div class="field col-6">
                                                                 <label class="label label-id">รหัสลูกค้า</label>
-                                                                <input class="input idcustomer" type="text" name="id" value="<%= customers[i].idcustomer %>" required>
+                                                                <input class="input editid" type="text" name="id" value="<%= customers[i].idcustomer %>" required>
                                                             </div>
                                                             <div class="field col-6">
-                                                                <label class="label label-require">ชื่อลูกค้า</label>
-                                                                <input class="input namecustomer" type="text" name="name" value="<%= customers[i].name %>" required>
+                                                                <label class="label label-no-duplicate">ชื่อลูกค้า<span class="label-require"></span></label>
+                                                                <input class="input editname" type="text" name="name" value="<%= customers[i].name %>" required>
                                                             </div>
                                                         </div>
                                                         <button class="button success float-right" type="sumbit">บันทึก</button>

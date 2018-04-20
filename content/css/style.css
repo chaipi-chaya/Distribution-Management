@@ -24,6 +24,14 @@
     margin-left: 5px;
 }
 
+.label-no-duplicate:after {
+    content: "ไม่สามารถซ้ำได้";
+    font-size: 0.75rem;
+    color: #4F5866;
+    font-weight: 300;
+    margin-left: 5px;
+}
+
 .display-none {
     display: none;
 }

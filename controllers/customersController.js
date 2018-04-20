@@ -5,11 +5,8 @@ module.exports = function(app, con) {
         con.query('SELECT * FROM customers ORDER BY idcustomer',
             function(err, rows) {
                 if(err) throw err;
-                var idList = [];
-                for (var i=0; i < rows.length; i++) idList.push(rows[i].idcustomer);
                 res.render('pages/customers', {
-                    customers: rows,
-                    idList: idList
+                    customers: rows
                 });
             }
         );

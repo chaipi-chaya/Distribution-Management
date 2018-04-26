@@ -32,6 +32,14 @@
     margin-left: 5px;
 }
 
+.label-document:after {
+    content: "เอกสารใส่ค่า 1";
+    font-size: 0.75rem;
+    color: #4F5866;
+    font-weight: 300;
+    margin-left: 5px;
+}
+
 .display-none {
     display: none;
 }
@@ -49,6 +57,11 @@
     width: 100%;
 }
 
+/* inline input button */
+.inline-button {
+    margin-top: 43px;
+    margin-left: 8px;
+}
 
 
 

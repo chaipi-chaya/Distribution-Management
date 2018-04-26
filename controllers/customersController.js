@@ -11,7 +11,6 @@ module.exports = function(app, con) {
             }
         );
 
-
     });
 
     app.post('/customers/add', function (req, res) {

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../partials/head %>
+        <script>
+                
+            function checkDel() {
+                if (confirm('ต้องการลบใช่หรือไม่')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            
+            $( document ).ready(function() {
+
+                $('select#idcustomer').change(function(){
+                    $('option#customer-default').remove();
+                    var parameters = { id: $(this).val() };
+                    $.get('/deliveries/getbranch', parameters, function(data) {
+                        var $branch = $('select#idbranch');
+                        if (data.length == 0) {
+                            $branch.empty();
+                            $branch.append( '<option id="branch-default" value="" selected>ไม่มีสาขา เพิ่มสาขาที่หน้าจัดการลูกค้า</option>' );
+                        } else {
+                            $branch.empty();
+                            $branch.append( '<option id="branch-default" value="" selected>เลือกลูกค้า</option>' );
+                            for (var i = 0; i < data.length; i++) {
+                                $branch.append( "<option value=" + data[i].id + ">" + data[i].name + "</option>" );
+                            }
+                        }
+                    });
+                });
+
+                $('select#idbranch').change(function(){
+                    $('option#branch-default').remove();
+                    var parameters = { id: $(this).val() };
+                    $.get('/deliveries/getproduct', parameters, function(data) {
+                        var $product = $('select#idproduct');
+                        if (data.length == 0) {
+                            $product.empty();
+                            $product.append( '<option id="product-default" value="" selected>ไม่มีสินค้า เพิ่มสินค้าที่หน้าจัดการสาขาในหน้าจัดการสินค้า</option>' );
+                        } else {
+                            $product.empty();
+                            $product.append( '<option id="product-default" value="" selected>เลือกสินค้า</option>' );
+                            for (var i = 0; i < data.length; i++) {
+                                $product.append( "<option value=" + data[i].id + ">" + data[i].name + "</option>" );
+                            }
+                        }
+                    });
+                });
+                
+            });
+            
+        </script>
+    </head>
+    <body>
+        <% include ../partials/menu %>
+        <main class="section">
+            <div class="container-fluid">
+                <section class="section">
+                    <div class="container">
+                        <h1 class="title">จัดการการขนส่ง</h1>
+                        <button class="button success button-float-right-margin-bottom" onclick="modalShow(this)">เพิ่มการขนส่ง</button>
+                        <div class="modal">
+                            <div class="modal-background" onclick="modalHide(this)"></div>
+                            <div class="modal-content">
+                                <form method="post" action="/deliveries/add">
+                                    <div class="cols">
+                                        <div class="field col-6">
+                                            <label class="label label-require">ชื่อลูกค้า</label>
+                                            <div class="select">
+                                                <select id="idcustomer" name="idcustomer" required>
+                                                    <option id="customer-default" value="" selected>เลือกลูกค้า</option>
+                                                    <% for(var j=0; j<customers.length; j++) {%>
+                                                    <option value="<%= customers[j].idcustomer %>"><%= customers[j].name %></option>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="field col-6">
+                                            <label class="label label-require">ชื่อสาขา</label>
+                                            <div class="select">
+                                                <select id="idbranch" name="idbranch" required>
+                                                    <option id="branch-default" value="" selected>เลือกลูกค้า</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="field col-6">
+                                            <label class="label label-require">ชื่อสินค้า</label>
+                                            <div class="select">
+                                                <select id="idproduct" name="idproduct" required>
+                                                    <option id="product-default" value="" selected>เลือกสินค้า</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="field col-6">
+                                            <label class="label label-require">ความเร่งด่วน</label>
+                                            <div class="select">
+                                                <select name="priority" required>
+                                                    <option value="1">1 ส่งตามลำดับแต่ไม่เร่งด่วน</option>
+                                                    <option value="2" selected>2 ส่งตามลำดับ</option>
+                                                    <option value="3">3 ส่งเร็วที่สุดเท่าที่เป็นไปได้</option>
+                                                    <option value="4">4 ส่งทันที</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="field col-6">
+                                            <label class="label label-document label-require">จำนวนที่สั่ง(ขวด)<span class="label-require"></span></label>
+                                            <input class="input" id="amount_in_bottle" name="amount_in_bottle" type="number">
+                                        </div>
+                                        <button class="button success float-right inline-button" type="sumbit">บันทึก</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <button class="close large" onclick="modalHide(this)" aria-label="close"></button>
+                        </div>
+                        <table class="table striped full-width first-col-center bordered hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ลูกค้า</th>
+                                    <th>สาขา</th>
+                                    <th>สินค้า</th>
+                                    <th width=120>จำนวน(ขวด)</th>
+                                    <th width=120>ความเร่งด่วน</th>
+                                    <th width=100></th>
+                                    <th width=100></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <% for(var i=0; i<delivery_queues.length; i++) {%>
+                                    <tr>
+                                        <td><%= delivery_queues[i].customer_name %></td>
+                                        <td><%= delivery_queues[i].branch_name %></td>
+                                        <td><%= delivery_queues[i].product_name %></td>
+                                        <td class="align-center"><%= delivery_queues[i].amount_in_bottle %></td>
+                                        <td class="align-center"><%= delivery_queues[i].priority %></td>
+                                        <td class="align-center">
+                                            <a class="button warning" onclick="modalShow(this)">แก้ไข</a>
+                                            <div class="modal">
+                                                <div class="modal-background" onclick="modalHide(this)"></div>
+                                                <div class="modal-content align-left">
+                                                    <form method="post" action="/deliveries/edit">
+                                                        <div class="cols">
+                                                            <div class="field col-6">
+                                                                    <label class="label label-require">ชื่อสินค้า</label>
+                                                                    <div class="select">
+                                                                        <select name="idproduct" required>
+                                                                        </select>
+                                                                    </div>
+                                                            </div>
+                                                            <button class="button success float-right" type="sumbit">บันทึก</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <button class="close large" onclick="modalHide(this)" aria-label="close"></button>
+                                            </div>
+                                        </td>
+                                        <td class="align-center">
+                                            <form method="post" action="/deliveries/del" onsubmit="return checkDel()">
+                                                <input class="display-none" type="text" name="id" value="<%= delivery_queues[i].id %>">
+                                                <button class="button danger" type="sumbit">ลบ</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </body>
+</html>

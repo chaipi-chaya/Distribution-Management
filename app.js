@@ -28,6 +28,7 @@ customersController(app, con);
 branchsController(app, con);
 productsController(app, con);
 productsEachBranchController(app, con);
+deliveryQueueController(app, con);
 
 var port = process.env.PORT || 3000;
 

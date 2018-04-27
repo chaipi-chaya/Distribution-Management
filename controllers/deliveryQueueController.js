@@ -82,4 +82,24 @@ module.exports = function(app, con) {
         
     });
     
+    app.post('/deliveries/edit', function (req, res) {
+
+        var delivery_queue = {
+            id : req.body.id,
+            idcustomer : req.body.idcustomer,
+            idproduct: req.body.idproduct,
+            idbranch: req.body.idbranch,
+            priority: req.body.priority,
+            amount_in_bottle: req.body.amount_in_bottle
+        };
+        
+        con.query('UPDATE delivery_queues SET idcustomer = "' + delivery_queue.idcustomer + '", idproduct = "' + delivery_queue.idproduct + '", idbranch = "' + delivery_queue.idbranch + '", priority = "' + delivery_queue.priority + '", amount_in_bottle = "' + delivery_queue.amount_in_bottle + '" WHERE iddelivery_queue = ' + delivery_queue.id + ' ;',
+            function(err) {
+                if(err) throw err;
+                res.redirect(req.get('referer'));
+            }
+        );
+        
+    });
+    
 }

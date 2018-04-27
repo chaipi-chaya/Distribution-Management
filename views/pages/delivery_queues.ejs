@@ -12,45 +12,61 @@
                 }
             }
             
-            $( document ).ready(function() {
-
-                $('select#idcustomer').change(function(){
-                    $('option#customer-default').remove();
-                    var parameters = { id: $(this).val() };
-                    $.get('/deliveries/getbranch', parameters, function(data) {
-                        var $branch = $('select#idbranch');
-                        if (data.length == 0) {
-                            $branch.empty();
-                            $branch.append( '<option id="branch-default" value="" selected>ไม่มีสาขา เพิ่มสาขาที่หน้าจัดการลูกค้า</option>' );
-                        } else {
-                            $branch.empty();
-                            $branch.append( '<option id="branch-default" value="" selected>เลือกลูกค้า</option>' );
+            function getBranchs(n, status, idbranch, idproduct) {
+                
+                var parameters = { id: parseInt($('select.idcustomer')[n].value) };
+                $.get('/deliveries/getbranch', parameters, function(data) {
+                    var branch = $('select.idbranch')[n];
+                    $( branch ).empty();
+                    if (data.length == 0) {
+                        $( branch ).append( '<option class="branch-default" value="" selected>ไม่มีสาขา เพิ่มสาขาที่หน้าจัดการลูกค้า</option>' );
+                    } else {
+                        if (status == 'create') {
+                            if ($('option.customer-default')[0]) { $('option.customer-default')[0].remove() }
+                            $( branch ).append( '<option class="branch-default" value="" selected>เลือกลูกค้า</option>' );
                             for (var i = 0; i < data.length; i++) {
-                                $branch.append( "<option value=" + data[i].id + ">" + data[i].name + "</option>" );
+                                $( branch ).append( "<option value=" + data[i].id + ">" + data[i].name + "</option>" );
                             }
-                        }
-                    });
-                });
-
-                $('select#idbranch').change(function(){
-                    $('option#branch-default').remove();
-                    var parameters = { id: $(this).val() };
-                    $.get('/deliveries/getproduct', parameters, function(data) {
-                        var $product = $('select#idproduct');
-                        if (data.length == 0) {
-                            $product.empty();
-                            $product.append( '<option id="product-default" value="" selected>ไม่มีสินค้า เพิ่มสินค้าที่หน้าจัดการสาขาในหน้าจัดการสินค้า</option>' );
-                        } else {
-                            $product.empty();
-                            $product.append( '<option id="product-default" value="" selected>เลือกสินค้า</option>' );
+                        } else if (status == 'update') {
                             for (var i = 0; i < data.length; i++) {
-                                $product.append( "<option value=" + data[i].id + ">" + data[i].name + "</option>" );
+                                var selected = '';
+                                if (data[i].id == idbranch) { selected = 'selected'; }
+                                $( branch ).append( "<option value=" + data[i].id + " " + selected + ">" + data[i].name + "</option>" );
                             }
+                            if (idproduct != -1) { getProducts(n, 'update', idproduct) }
                         }
-                    });
+                    }
                 });
                 
-            });
+            }
+            
+            function getProducts(n, status, idproduct) {
+                                
+                var parameters = { id: parseInt($('select.idbranch')[n].value) };
+                $.get('/deliveries/getproduct', parameters, function(data) {
+                    console.log(data);
+                    var product = $('select.idproduct')[n];
+                    $( product ).empty();
+                    if (data.length == 0) {
+                        $( product ).append( '<option class="product-default" value="" selected>ไม่มีสินค้า เพิ่มสินค้าที่หน้าจัดการสาขาในหน้าจัดการสินค้า</option>' );
+                    } else {
+                        if (status == 'create') {
+                            $('option.branch-default')[0].remove();
+                            $( product ).append( '<option class="product-default" value="" selected>เลือกสินค้า</option>' );
+                            for (var i = 0; i < data.length; i++) {
+                                $( product ).append( "<option value=" + data[i].id + ">" + data[i].name + "</option>" );
+                            }
+                        } else if (status == 'update') {
+                            for (var i = 0; i < data.length; i++) {
+                                var selected = '';
+                                if (data[i].id == idproduct) { selected = 'selected'; }
+                                $( product ).append( "<option value=" + data[i].id + " " + selected + ">" + data[i].name + "</option>" );
+                            }
+                        }
+                    }
+                });
+                
+            }
             
         </script>
     </head>
@@ -70,8 +86,8 @@
                                         <div class="field col-6">
                                             <label class="label label-require">ชื่อลูกค้า</label>
                                             <div class="select">
-                                                <select id="idcustomer" name="idcustomer" required>
-                                                    <option id="customer-default" value="" selected>เลือกลูกค้า</option>
+                                                <select class="idcustomer" name="idcustomer" onchange="getBranchs(0, 'create', -1, -1)" required>
+                                                    <option class="customer-default" value="" selected>เลือกลูกค้า</option>
                                                     <% for(var j=0; j<customers.length; j++) {%>
                                                     <option value="<%= customers[j].idcustomer %>"><%= customers[j].name %></option>
                                                     <% } %>
@@ -81,23 +97,23 @@
                                         <div class="field col-6">
                                             <label class="label label-require">ชื่อสาขา</label>
                                             <div class="select">
-                                                <select id="idbranch" name="idbranch" required>
-                                                    <option id="branch-default" value="" selected>เลือกลูกค้า</option>
+                                                <select class="idbranch" name="idbranch" onchange="getProducts(0, 'create', -1)" required>
+                                                    <option class="branch-default" value="" selected>เลือกลูกค้า</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="field col-6">
                                             <label class="label label-require">ชื่อสินค้า</label>
                                             <div class="select">
-                                                <select id="idproduct" name="idproduct" required>
-                                                    <option id="product-default" value="" selected>เลือกสินค้า</option>
+                                                <select class="idproduct" name="idproduct" required>
+                                                    <option class="product-default" value="" selected>เลือกสินค้า</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="field col-6">
                                             <label class="label label-require">ความเร่งด่วน</label>
                                             <div class="select">
-                                                <select name="priority" required>
+                                                <select class="priority" name="priority" required>
                                                     <option value="1">1 ส่งตามลำดับแต่ไม่เร่งด่วน</option>
                                                     <option value="2" selected>2 ส่งตามลำดับ</option>
                                                     <option value="3">3 ส่งเร็วที่สุดเท่าที่เป็นไปได้</option>
@@ -107,7 +123,7 @@
                                         </div>
                                         <div class="field col-6">
                                             <label class="label label-document label-require">จำนวนที่สั่ง(ขวด)<span class="label-require"></span></label>
-                                            <input class="input" id="amount_in_bottle" name="amount_in_bottle" type="number">
+                                            <input class="input amount_in_bottle" name="amount_in_bottle" type="number">
                                         </div>
                                         <button class="button success float-right inline-button" type="sumbit">บันทึก</button>
                                     </div>
@@ -153,14 +169,52 @@
                                                 <div class="modal-content align-left">
                                                     <form method="post" action="/deliveries/edit">
                                                         <div class="cols">
+                                                            <input class="display-none" type="text" name="id" value="<%= delivery_queues[i].id %>">
                                                             <div class="field col-6">
-                                                                    <label class="label label-require">ชื่อสินค้า</label>
-                                                                    <div class="select">
-                                                                        <select name="idproduct" required>
-                                                                        </select>
-                                                                    </div>
+                                                                <label class="label label-require">ชื่อลูกค้า</label>
+                                                                <div class="select">
+                                                                    <select class="idcustomer" name="idcustomer" onchange="getBranchs(<%= i+1 %>, 'update', <%= delivery_queues[i].idbranch %>, -1)" required>
+                                                                        <% for(var j=0; j<customers.length; j++) {%>
+                                                                        <option value="<%= customers[j].idcustomer %>" <% if (customers[j].idcustomer == delivery_queues[i].idcustomer) { %>selected<% } %>><%= customers[j].name %></option>
+                                                                        <% } %>
+                                                                    </select>
+                                                                </div>
                                                             </div>
-                                                            <button class="button success float-right" type="sumbit">บันทึก</button>
+                                                            <div class="field col-6">
+                                                                <label class="label label-require">ชื่อสาขา</label>
+                                                                <div class="select">
+                                                                    <select class="idbranch" name="idbranch" onchange="getProducts(<%= i+1 %>, 'update', <%= delivery_queues[i].idproduct %>)" required>
+                                                                        <option class="branch-default" value="" selected>เลือกลูกค้า</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="field col-6">
+                                                                <label class="label label-require">ชื่อสินค้า</label>
+                                                                <div class="select">
+                                                                    <select class="idproduct" name="idproduct" required>
+                                                                        <option class="product-default" value="" selected>เลือกสินค้า</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="field col-6">
+                                                                <label class="label label-require">ความเร่งด่วน</label>
+                                                                <div class="select">
+                                                                    <select class="priority" name="priority" required>
+                                                                        <option value="1" <% if (delivery_queues[i].priority == 1) {%> selected<% } %>>1 ส่งตามลำดับแต่ไม่เร่งด่วน</option>
+                                                                        <option value="2" <% if (delivery_queues[i].priority == 2) {%> selected<% } %>>2 ส่งตามลำดับ</option>
+                                                                        <option value="3" <% if (delivery_queues[i].priority == 3) {%> selected<% } %>>3 ส่งเร็วที่สุดเท่าที่เป็นไปได้</option>
+                                                                        <option value="4" <% if (delivery_queues[i].priority == 4) {%> selected<% } %>>4 ส่งทันที</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="field col-6">
+                                                                <label class="label label-document label-require">จำนวนที่สั่ง(ขวด)<span class="label-require"></span></label>
+                                                                <input class="input amount_in_bottle" name="amount_in_bottle" type="number" value="<%= delivery_queues[i].amount_in_bottle %>">
+                                                            </div>
+                                                            <button class="button success float-right inline-button" type="sumbit">บันทึก</button>
+                                                            <script>
+                                                                getBranchs(<%= i+1 %>, 'update', <%= delivery_queues[i].idbranch %>, <%= delivery_queues[i].idproduct %>);
+                                                            </script>
                                                         </div>
                                                     </form>
                                                 </div>

@@ -10,6 +10,7 @@ var customersController = require('./controllers/customersController');
 var branchsController = require('./controllers/branchsController');
 var productsController = require('./controllers/productsController');
 var productsEachBranchController = require('./controllers/productsEachBranchController');
+var deliveryQueueController = require('./controllers/deliveryQueueController');
 
 app.set('view engine', 'ejs');
 

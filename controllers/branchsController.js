@@ -89,5 +89,21 @@ module.exports = function(app, con) {
 
     });
 
+    app.post('/branchs/limitation', function (req, res) {
+
+        var branch = {
+            id : req.body.id,
+            limitation: req.body.limitation
+        };
+
+        con.query('UPDATE branchs SET limitation = "' + branch.limitation.join("/") + '" WHERE id = ' + branch.id + ';',
+            function(err) {
+                if(err) throw err;
+                res.redirect(req.get('referer'));
+            }
+        );
+
+    });
+
 }
     

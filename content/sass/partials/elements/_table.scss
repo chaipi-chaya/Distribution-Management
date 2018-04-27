@@ -83,6 +83,11 @@ $table-radius: $radius;
 				background: $table-hover-color;
 			}
 		}
+        thead, tfoot {
+            tr:not(.active):hover {
+                background: $table-header-background;
+            }
+        }
 	}
 	&.bordered {
 		border: 1px solid $table-border-color;

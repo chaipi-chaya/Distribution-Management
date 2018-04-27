@@ -10,6 +10,24 @@
                     return false;
                 }
             }
+            
+            $( document ).ready(function() {
+                <% for(var i=0; i<branchs.length; i++) {%>
+                    <% if (branchs[i].limitation) { %>
+                        var inputs = $(".limitation-<%= branchs[i].id %> input[name=limitation]");
+                        var limitations = "<%= branchs[i].limitation %>".split("/");
+                        for(var i=0; i<inputs.length; i++) {
+                            var val = inputs[i].value;
+                            if (limitations.indexOf(val) >= 0) {
+                                $(inputs[i]).prop('checked', true);
+                            }
+                        }
+                    <% } %>
+                <% } %>
+                
+            });
+            
+            
         </script>
     </head>
     <body>
@@ -55,12 +73,14 @@
                                     <th>ชื่อสาขา</th>
                                     <th>ที่อยู่</th>
                                     <th width=150></th>
+                                    <th width=200></th>
                                     <th width=100></th>
                                     <th width=100></th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -77,6 +97,76 @@
                                         <td><%= branchs[i].location_lat %>, <%= branchs[i].location_lon %></td>
                                         <td class="align-center">
                                             <a class="button info" href="product_management/<%= branchs[i].id %>-<%= branchs[i].name %>-<%= customerName %>">จัดการสินค้า</a>
+                                        </td>
+                                        <td class="align-center">
+                                            <a class="button info" onclick="modalShow(this)">ข้อจำกัดการขนส่ง</a>
+                                            <div class="modal">
+                                                <div class="modal-background" onclick="modalHide(this)"></div>
+                                                <div class="modal-content align-left">
+                                                    <form method="post" action="/branchs/limitation" class="limitation-<%= branchs[i].id %>">
+                                                        <input class="display-none id" type="text" name="id" value="<%= branchs[i].id %>">
+                                                        <h3 class="subtitle" style="margin-bottom: 10px; text-align: center;">วันและเวลาที่ไม่สามารถส่งสินค้าได้</h3>
+                                                        <table class="table striped full-width first-col-center bordered hoverable limitation-table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>วัน</th>
+                                                                    <th class="align-center">เช้า (8.00-12.00)</th>
+                                                                    <th class="align-center">บ่าย (12.00-17.00)</th>
+                                                                    <th class="align-center">เย็น (17.00-22.00)</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tfoot>
+                                                                <tr>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </tfoot>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th>วันจันทร์</th>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="MON1"></td>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="MON2"></td>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="MON3"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>วันอังคาร</th>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="TUE1"></td>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="TUE2"></td>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="TUE3"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>วันพุธ</th>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="WED1"></td>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="WED2"></td>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="WED3"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>วันพฤหัสบดี</th>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="THU1"></td>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="THU2"></td>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="THU3"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>วันศุกร์</th>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="FRI1"></td>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="FRI2"></td>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="FRI3"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>วันเสาร์</th>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="SAT1"></td>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="SAT2"></td>
+                                                                    <td class="align-center checkbox"><input type="checkbox" name="limitation" value="SAT3"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <button class="button success button-float-right-margin-top" type="sumbit">บันทึก</button>
+                                                    </form>
+                                                </div>
+                                                <button class="close large" onclick="modalHide(this)" aria-label="close"></button>
+                                            </div>
                                         </td>
                                         <td class="align-center">
                                             <a class="button warning" onclick="modalShow(this)">แก้ไข</a>

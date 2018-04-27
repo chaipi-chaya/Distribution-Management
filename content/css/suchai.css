@@ -1277,6 +1277,9 @@ select {
 .table.hoverable tbody tr:not(.active):hover {
   background: #ECF0F1;
 }
+.table.hoverable thead tr:not(.active):hover, .table.hoverable tfoot tr:not(.active):hover {
+  background: #343D46;
+}
 .table.bordered {
   border: 1px solid #ECF0F1;
 }

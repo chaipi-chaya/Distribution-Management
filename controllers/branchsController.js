@@ -95,13 +95,28 @@ module.exports = function(app, con) {
             id : req.body.id,
             limitation: req.body.limitation
         };
-
-        con.query('UPDATE branchs SET limitation = "' + branch.limitation.join("/") + '" WHERE id = ' + branch.id + ';',
-            function(err) {
-                if(err) throw err;
-                res.redirect(req.get('referer'));
+        
+        if (branch.limitation) {
+            var limit = null;
+            if (branch.limitation.length > 1) {
+                limit = branch.limitation.join("/");
+            } else {
+                limit = branch.limitation.toString();
             }
-        );
+            con.query('UPDATE branchs SET limitation = "' + limit + '" WHERE id = ' + branch.id + ';',
+                function(err) {
+                    if(err) throw err;
+                    res.redirect(req.get('referer'));
+                }
+            );
+        } else {
+            con.query('UPDATE branchs SET limitation = NULL WHERE id = ' + branch.id + ';',
+                function(err) {
+                    if(err) throw err;
+                    res.redirect(req.get('referer'));
+                }
+            );
+        }
 
     });
 

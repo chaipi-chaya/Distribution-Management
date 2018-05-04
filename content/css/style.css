@@ -69,6 +69,17 @@
     height: 30px;
 }
 
+/* branch limitation table */
+.checkbox.big input {
+    width: 30px;
+    height: 30px;
+}
+
+/* align-right */
+.align-right {  
+    text-align: right;
+    justify-content: flex-end;
+}
 
 
 

@@ -20,6 +20,8 @@
                             var val = inputs[i].value;
                             if (limitations.indexOf(val) >= 0) {
                                 $(inputs[i]).prop('checked', true);
+                            } else {
+                                $(inputs[i]).prop('checked', false);
                             }
                         }
                     <% } %>
@@ -53,11 +55,11 @@
                                             <input class="input" type="text" name="name" required>
                                         </div>
                                         <div class="field col-3">
-                                            <label class="label label-require">ละติจูด (ค่าประมาน 13)</label>
+                                            <label class="label label-require">ละติจูด (ค่าประมาน 13 ทศนิยม 6 ตำแหน่ง)</label>
                                             <input class="input" type="text" name="location_lat" required>
                                         </div>
                                         <div class="field col-3">
-                                            <label class="label label-require">ลองติจูด (ค่าประมาน 100)</label>
+                                            <label class="label label-require">ลองติจูด (ค่าประมาน 100 ทศนิยม 6 ตำแหน่ง)</label>
                                             <input class="input" type="text" name="location_lon" required>
                                         </div>
                                     </div>
@@ -185,11 +187,11 @@
                                                                 <input class="input namebranch" type="text" name="name" value="<%= branchs[i].name %>" required>
                                                             </div>
                                                             <div class="field col-3">
-                                                                <label class="label label-require">ละติจูด (ค่าประมาน 13)</label>
+                                                                <label class="label label-require">ละติจูด (ค่าประมาน 13 ทศนิยม 6 ตำแหน่ง)</label>
                                                                 <input class="input location_lat" type="text" name="location_lat" value="<%= branchs[i].location_lat %>" required>
                                                             </div>
                                                             <div class="field col-3">
-                                                                <label class="label label-require">ลองติจูด (ค่าประมาน 100)</label>
+                                                                <label class="label label-require">ลองติจูด (ค่าประมาน 100 ทศนิยม 6 ตำแหน่ง)</label>
                                                                 <input class="input location_lon" type="text" name="location_lon" value="<%= branchs[i].location_lon %>" required>
                                                             </div>
                                                         </div>

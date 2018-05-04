@@ -1,16 +1,18 @@
 'use strict';
 
-var express = require('express');
-var app =  express();
-var path = require('path');
-var bodyParser = require('body-parser');
-var mysql = require('mysql');
+const express = require('express');
+const app =  express();
+const path = require('path');
+const bodyParser = require('body-parser');
+const mysql = require('mysql');
 
-var customersController = require('./controllers/customersController');
-var branchsController = require('./controllers/branchsController');
-var productsController = require('./controllers/productsController');
-var productsEachBranchController = require('./controllers/productsEachBranchController');
-var deliveryQueueController = require('./controllers/deliveryQueueController');
+const customersController = require('./controllers/customersController');
+const branchsController = require('./controllers/branchsController');
+const productsController = require('./controllers/productsController');
+const productsEachBranchController = require('./controllers/productsEachBranchController');
+const deliveryQueueController = require('./controllers/deliveryQueueController');
+const routePredictionController = require('./controllers/routePredictionController');
+
 
 app.set('view engine', 'ejs');
 
@@ -30,7 +32,8 @@ branchsController(app, con);
 productsController(app, con);
 productsEachBranchController(app, con);
 deliveryQueueController(app, con);
+routePredictionController(app, con);
 
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => console.log('listening on port 3000!'));

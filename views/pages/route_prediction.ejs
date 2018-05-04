@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../partials/head %>
+        <script>
+            function getDate() {
+                var days = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+                var hours = ['', '', 'เช้า', 'บ่าย', 'เย็น', '', ''];
+                var time = new Date();
+                if (Math.floor(time.getHours()/4) == 2) {
+                    $('h2#date1').text("วัน" + days[time.getDay()] + " ช่วง" + hours[2]);
+                    $('h2#date2').text("วัน" + days[time.getDay()] + " ช่วง" + hours[3]);
+                } else {
+                    $('h2#date1').text("วัน" + days[time.getDay()] + " ช่วง" + hours[3]);
+                }
+                $('section.result-section').css('display', 'block')
+            }
+            
+            function showRoute(data) {
+                
+                $('#result').empty();
+                var queues = <%- JSON.stringify(delivery_queues) %>;
+                var queue = {};
+                var data = JSON.parse(data);
+                var table = '<table class="table striped full-width first-col-center bordered hoverable"><thead><tr><th>ลูกค้า</th><th>สาขา</th><th>สินค้า</th><th width=120>จำนวน(ขวด)</th><th width=120>ความเร่งด่วน</th></tr></thead><tfoot><tr><th></th><th></th><th></th><th></th><th></th></tr></tfoot><tbody>';
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].length > 1) {
+                        for (var j = 0; j < data[i].length; j++) {
+                            queue = queues[data[i][j]];
+                            table = table + '<tr class="set-' + i + '">';
+                            table = table + '<td>'+ queue.customer_name +'</td>';
+                            table = table + '<td>'+ queue.branch_name +'</td>';
+                            table = table + '<td>'+ queue.product_name +'</td>';
+                            table = table + '<td>'+ queue.amount_in_bottle +'</td>';
+                            table = table + '<td>'+ queue.priority +'</td>';
+                            table = table + '</tr>';
+                        }
+                    } else if (data[i].length != 0) {
+                        queue = queues[data[i][0]];
+                        table = table + '<tr class="set-' + i + '">';
+                        table = table + '<td>'+ queue.customer_name +'</td>';
+                        table = table + '<td>'+ queue.branch_name +'</td>';
+                        table = table + '<td>'+ queue.product_name +'</td>';
+                        table = table + '<td>'+ queue.amount_in_bottle +'</td>';
+                        table = table + '<td>'+ queue.priority +'</td>';
+                        table = table + '</tr>';
+                    }
+                }
+                table = table + '</tbody></table>';
+                $('#result').html(table);
+                
+            }
+            
+            function setRoute() {
+                
+                $.ajax({
+                    type: 'POST',
+                    data: $("form#delivery_queues").serialize(),
+                    url: 'http://localhost:3000/routes/predict',
+                    success: function(data) {
+                        getDate();
+                        showRoute(JSON.stringify(data));
+                        console.log(data);
+                    }
+                });
+                
+                return false;
+            }
+            
+        </script>
+    </head>
+    <body>
+        <% include ../partials/menu %>
+        <main class="section">
+            <div class="container-fluid">
+                <section class="section">
+                    <div class="container">
+                        <h1 class="title" style="margin-bottom: 10px;">จัดสายขนส่ง</h1>
+                        <form method="post" id="delivery_queues"  onsubmit="return setRoute()">
+                            <table class="table striped full-width first-col-center bordered hoverable">
+                                <thead>
+                                    <tr>
+                                        <th>ลูกค้า</th>
+                                        <th>สาขา</th>
+                                        <th>สินค้า</th>
+                                        <th width=120>จำนวน(ขวด)</th>
+                                        <th width=120>ความเร่งด่วน</th>
+                                        <th width=120>นำไปจัดสาย</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <% for(var i=0; i<delivery_queues.length; i++) {%>
+                                        <tr>
+                                            <td><%= delivery_queues[i].customer_name %></td>
+                                            <td><%= delivery_queues[i].branch_name %></td>
+                                            <td><%= delivery_queues[i].product_name %></td>
+                                            <td class="align-center"><%= delivery_queues[i].amount_in_bottle %></td>
+                                            <td class="align-center"><%= delivery_queues[i].priority %></td>
+                                            <td class="align-center checkbox big"><input type="checkbox" name="for_prediction" value="<%= delivery_queues[i].idbranch %>/<%= delivery_queues[i].location_lat %>/<%= delivery_queues[i].location_lon %>"></td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                            <div class="field cols align-right">
+                                <div class="field col-2" style="margin-top: 0px;">
+                                    <label class="label right">จำนวนเที่ยว</label>
+                                </div>
+                                <div class="field col-2" style="margin-top: 0px;">
+                                    <input class="input col-2" name="rounds" type="number">
+                                </div>
+                                <button class="button success button-float-right-margin-top" type="sumbit">จัดเส้นทาง</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                <section class="section result-section" style="display: none;">
+                    <div class="container">
+                        <h1 class="title" style="margin-bottom: 10px;">ผลการจัดเส้นทาง</h1>
+                        <div class="result-wrapper">
+                            <h2 class="subtitle" id="date1" style="margin-bottom: 10px; padding-left: 2rem;"></h2>
+                            <div id="result"></div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </body>
+</html>

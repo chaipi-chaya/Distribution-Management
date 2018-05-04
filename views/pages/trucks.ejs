@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <% include ../partials/head %>
+    </head>
+    <body>
+        <% include ../partials/menu %>
+        <main class="section">
+            <div class="container-fluid">
+                <section class="section">
+                    <div class="container">
+                        <h1 class="title" style="margin-bottom: 10px;">จัดสายขนส่ง</h1>
+                        <form method="post" id="delivery_queues">
+                            <table class="table striped full-width first-col-center bordered hoverable">
+                                <thead>
+                                    <tr>
+                                        <th>ลูกค้า</th>
+                                        <th>สาขา</th>
+                                        <th>สินค้า</th>
+                                        <th width=120>จำนวน(ขวด)</th>
+                                        <th width=120>ความเร่งด่วน</th>
+                                        <th width=120>นำไปจัดสาย</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <% for(var i=0; i<delivery_queues.length; i++) {%>
+                                        <tr>
+                                            <td><%= delivery_queues[i].customer_name %></td>
+                                            <td><%= delivery_queues[i].branch_name %></td>
+                                            <td><%= delivery_queues[i].product_name %></td>
+                                            <td class="align-center"><%= delivery_queues[i].amount_in_bottle %></td>
+                                            <td class="align-center"><%= delivery_queues[i].priority %></td>
+                                            <td class="align-center checkbox big"><input type="checkbox" name="for_prediction" value="<%= delivery_queues[i].idbranch %>"></td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                            <div class="field cols align-right">
+                                <div class="field col-2" style="margin-top: 0px;">
+                                    <label class="label right">จำนวนเที่ยว</label>
+                                </div>
+                                <div class="field col-2" style="margin-top: 0px;">
+                                    <input class="input col-2" name="rounds" type="number">
+                                </div>
+                                <button class="button success button-float-right-margin-top" onclick="setRoute()" type="sumbit">จัดเส้นทาง</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                <section class="section result-section" style="display: none;">
+                    <div class="container">
+                        <h1 class="title" style="margin-bottom: 10px;">ผลการจัดเส้นทาง</h1>
+                        <div class="result-wrapper">
+                            <h2 class="subtitle" id="date1" style="margin-bottom: 10px; padding-left: 2rem;"></h2>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </body>
+</html>

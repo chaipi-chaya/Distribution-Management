@@ -16,6 +16,32 @@
                 $('section.result-section').css('display', 'block')
             }
             
+            function showQueue(data) {
+                
+                var days = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+                var time = new Date();
+                var dayNow = time.getDay();
+                var queuesHtml = '';
+                var showedList = [];
+                for (let i = dayNow; i < days.length; i++) {
+                    queuesHtml = queuesHtml + '<h2 class="subtitle">วัน' + days[i] + '</h2>';
+                    queuesHtml = queuesHtml + '<table class="table striped full-width first-col-center bordered hoverable"><thead><tr><th>ลูกค้า</th><th>สาขา</th><th>สินค้า</th><th width=120>จำนวน(ขวด)</th><th width=120>ความเร่งด่วน</th><th width=120>นำไปจัดสายช่วงเช้า</th><th width=120>นำไปจัดสายช่วงบ่าย</th></tr></thead><tfoot><tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot><tbody>';
+                    // if showedList len != data len show more data
+                    for (let j = 0; j < data.length; j++) {
+                        // if data[i].limitaion is fit show and add to showedList
+                        queuesHtml = queuesHtml + '<tr><td>'+ queue.customer_name +'</td>';
+                        queuesHtml = queuesHtml + '<td>'+ queue.customer_name +'</td>';
+                        queuesHtml = queuesHtml + '<td>'+ queue.branch_name +'</td>';
+                        queuesHtml = queuesHtml + '<td>'+ queue.product_name +'</td>';
+                        queuesHtml = queuesHtml + '<td>'+ queue.amount_in_bottle +'</td>';
+                        queuesHtml = queuesHtml + '<td>'+ queue.priority +'</td>';
+                        // else not show
+                    }
+                    // else not data for show
+                }
+                
+            }
+            
             function showRoute(data) {
                 
                 $('#result').empty();
@@ -23,9 +49,9 @@
                 var queue = {};
                 var data = JSON.parse(data);
                 var table = '<table class="table striped full-width first-col-center bordered hoverable"><thead><tr><th>ลูกค้า</th><th>สาขา</th><th>สินค้า</th><th width=120>จำนวน(ขวด)</th><th width=120>ความเร่งด่วน</th></tr></thead><tfoot><tr><th></th><th></th><th></th><th></th><th></th></tr></tfoot><tbody>';
-                for (var i = 0; i < data.length; i++) {
+                for (let i = 0; i < data.length; i++) {
                     if (data[i].length > 1) {
-                        for (var j = 0; j < data[i].length; j++) {
+                        for (let j = 0; j < data[i].length; j++) {
                             queue = queues[data[i][j]];
                             table = table + '<tr class="set-' + i + '">';
                             table = table + '<td>'+ queue.customer_name +'</td>';
@@ -60,7 +86,6 @@
                     success: function(data) {
                         getDate();
                         showRoute(JSON.stringify(data));
-                        console.log(data);
                     }
                 });
                 
@@ -135,4 +160,7 @@
             </div>
         </main>
     </body>
+    <script>
+        showQueue(<%- JSON.stringify(delivery_queues) %>);
+    </script>
 </html>

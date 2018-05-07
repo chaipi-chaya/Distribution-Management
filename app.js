@@ -12,6 +12,7 @@ const productsController = require('./controllers/productsController');
 const productsEachBranchController = require('./controllers/productsEachBranchController');
 const deliveryQueueController = require('./controllers/deliveryQueueController');
 const routePredictionController = require('./controllers/routePredictionController');
+const trucksController = require('./controllers/trucksController');
 
 
 app.set('view engine', 'ejs');
@@ -33,6 +34,7 @@ productsController(app, con);
 productsEachBranchController(app, con);
 deliveryQueueController(app, con);
 routePredictionController(app, con);
+trucksController(app, con);
 
 const port = process.env.PORT || 3000;
 

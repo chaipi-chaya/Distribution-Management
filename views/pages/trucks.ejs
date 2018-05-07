@@ -2,6 +2,15 @@
 <html>
     <head>
         <% include ../partials/head %>
+        <script>
+            function checkDel() {
+                if (confirm('ต้องการลบใช่หรือไม่')) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        </script>
     </head>
     <body>
         <% include ../partials/menu %>
@@ -10,51 +19,92 @@
                 <section class="section">
                     <div class="container">
                         <h1 class="title" style="margin-bottom: 10px;">จัดสายขนส่ง</h1>
-                        <form method="post" id="delivery_queues">
-                            <table class="table striped full-width first-col-center bordered hoverable">
-                                <thead>
-                                    <tr>
-                                        <th>ลูกค้า</th>
-                                        <th>สาขา</th>
-                                        <th>สินค้า</th>
-                                        <th width=120>จำนวน(ขวด)</th>
-                                        <th width=120>ความเร่งด่วน</th>
-                                        <th width=120>นำไปจัดสาย</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <% for(var i=0; i<delivery_queues.length; i++) {%>
-                                        <tr>
-                                            <td><%= delivery_queues[i].customer_name %></td>
-                                            <td><%= delivery_queues[i].branch_name %></td>
-                                            <td><%= delivery_queues[i].product_name %></td>
-                                            <td class="align-center"><%= delivery_queues[i].amount_in_bottle %></td>
-                                            <td class="align-center"><%= delivery_queues[i].priority %></td>
-                                            <td class="align-center checkbox big"><input type="checkbox" name="for_prediction" value="<%= delivery_queues[i].idbranch %>"></td>
-                                        </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                            <div class="field cols align-right">
-                                <div class="field col-2" style="margin-top: 0px;">
-                                    <label class="label right">จำนวนเที่ยว</label>
-                                </div>
-                                <div class="field col-2" style="margin-top: 0px;">
-                                    <input class="input col-2" name="rounds" type="number">
-                                </div>
-                                <button class="button success button-float-right-margin-top" onclick="setRoute()" type="sumbit">จัดเส้นทาง</button>
+                        <button class="button success button-float-right-margin-bottom" onclick="modalShow(this)">เพิ่มรถ</button>
+                        <div class="modal">
+                            <div class="modal-background"  onclick="modalHide(this)"></div>
+                            <div class="modal-content">
+                                <form method="post" action="/trucks/add">
+                                    <div class="cols">
+                                        <div class="field col-4">
+                                            <label class="label label-require">ประเภทรถ</label>
+                                            <input class="input" type="text" name="type" required>
+                                        </div>
+                                        <div class="field col-4">
+                                            <label class="label">น้ำหนักบรรทุกสูงสุด(กก.)</label>
+                                            <input class="input" type="number" name="maxcapacity_in_kilo" required>
+                                        </div>
+                                        <div class="field col-4">
+                                            <label class="label label-require">ทะเบียน</label>
+                                            <input class="input" type="text" name="license_plate">
+                                        </div>
+                                    </div>
+                                    <button class="button success float-right" type="sumbit">บันทึก</button>
+                                </form>
                             </div>
-                        </form>
+                            <button class="close large" onclick="modalHide(this)" aria-label="close"></button>
+                        </div>
+                        <table class="table striped full-width first-col-center bordered hoverable">
+                            <thead>
+                                <tr>
+                                    <th>ประเภท</th>
+                                    <th width=220 class="align-center">น้ำหนักบรรทุกสูงสุด(กก.)</th>
+                                    <th width=150 class="align-center">ทะเบียน</th>
+                                    <th width=100></th>
+                                    <th width=100></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <% for(var i=0; i<trucks.length; i++) {%>
+                                    <tr>
+                                        <td><%= trucks[i].type %></td>
+                                        <td class="align-center"><%= trucks[i].maxcapacity_in_kilo %></td>
+                                        <td class="align-center"><%= trucks[i].license_plate %></td>
+                                        <td class="align-center">
+                                            <a class="button warning" onclick="modalShow(this)">แก้ไข</a>
+                                            <div class="modal">
+                                                <div class="modal-background" onclick="modalHide(this)"></div>
+                                                <div class="modal-content align-left">
+                                                    <form method="post" action="/trucks/edit">
+                                                        <input class="display-none" type="text" name="id" value="<%= trucks[i].idtruck %>">
+                                                        <div class="cols">
+                                                            <div class="field col-4">
+                                                                <label class="label label-require">ประเภท</label>
+                                                                <input class="input" type="text" name="type" value="<%= trucks[i].type %>" required>
+                                                            </div>
+                                                            <div class="field col-4">
+                                                                <label class="label label-require">น้ำหนักบรรทุกสูงสุด(กก.)</label>
+                                                                <input class="input" type="number" name="maxcapacity_in_kilo" value="<%= trucks[i].maxcapacity_in_kilo %>" required>
+                                                            </div>
+                                                            <div class="field col-4">
+                                                                <label class="label">ทะเบียน<span class="label-require"></span></label>
+                                                                <input class="input" type="text" name="license_plate" value="<%= trucks[i].license_plate %>">
+                                                            </div>
+                                                        </div>
+                                                        <button class="button success float-right" type="sumbit">บันทึก</button>
+                                                    </form>
+                                                </div>
+                                                <button class="close large" onclick="modalHide(this)" aria-label="close"></button>
+                                            </div>
+                                        </td>
+                                        <td class="align-center">
+                                            <form method="post" action="/trucks/del" onsubmit="return checkDel()">
+                                                <input class="display-none" type="text" name="id" value="<%= trucks[i].idtruck %>">
+                                                <button class="button danger" type="sumbit">ลบ</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
                     </div>
                 </section>
                 <section class="section result-section" style="display: none;">

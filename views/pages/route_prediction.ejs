@@ -3,6 +3,17 @@
     <head>
         <% include ../partials/head %>
         <script>
+            
+            function selectAll(i) {
+                var inputs = $( '.table-' + i + ' input[type=checkbox');
+                for( var j = 0; j < inputs.length; j++) {
+                    if (!($(inputs[j]).prop('disabled'))) {
+                        $(inputs[j]).attr('checked', true);
+                    }
+                }
+                return false;
+            }
+            
             function getDate() {
                 var days = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
                 var hours = ['', '', 'เช้า', 'บ่าย', 'เย็น', '', ''];
@@ -18,27 +29,78 @@
             
             function showQueue(data) {
                 
-                var days = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+                var daysTH = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+                var daysEN = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
                 var time = new Date();
-                var dayNow = time.getDay();
+                // var dayNow = time.getDay();
+                var dayNow = 3;
+                // var hourNow = time.getHours();
+                var hourNow = 7;
                 var queuesHtml = '';
                 var showedList = [];
-                for (let i = dayNow; i < days.length; i++) {
-                    queuesHtml = queuesHtml + '<h2 class="subtitle">วัน' + days[i] + '</h2>';
-                    queuesHtml = queuesHtml + '<table class="table striped full-width first-col-center bordered hoverable"><thead><tr><th>ลูกค้า</th><th>สาขา</th><th>สินค้า</th><th width=120>จำนวน(ขวด)</th><th width=120>ความเร่งด่วน</th><th width=120>นำไปจัดสายช่วงเช้า</th><th width=120>นำไปจัดสายช่วงบ่าย</th></tr></thead><tfoot><tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot><tbody>';
-                    // if showedList len != data len show more data
-                    for (let j = 0; j < data.length; j++) {
-                        // if data[i].limitaion is fit show and add to showedList
-                        queuesHtml = queuesHtml + '<tr><td>'+ queue.customer_name +'</td>';
-                        queuesHtml = queuesHtml + '<td>'+ queue.customer_name +'</td>';
-                        queuesHtml = queuesHtml + '<td>'+ queue.branch_name +'</td>';
-                        queuesHtml = queuesHtml + '<td>'+ queue.product_name +'</td>';
-                        queuesHtml = queuesHtml + '<td>'+ queue.amount_in_bottle +'</td>';
-                        queuesHtml = queuesHtml + '<td>'+ queue.priority +'</td>';
-                        // else not show
+                var notShowedList = [];
+                for (let i = dayNow; i < daysEN.length; i++) {
+                    queuesHtml = queuesHtml + '<h2 class="subtitle" style="margin-bottom:5px;">วัน' + daysTH[i] + '</h2><form method="post" id="delivery_queues_' + i + '" onsubmit="return setRoute(' + i + ')"><table class="table table-' + i + ' striped full-width first-col-center bordered hoverable"><thead><tr><th>ลูกค้า</th><th>สาขา</th><th>สินค้า</th><th class="align-center" width=120>จำนวน(ขวด)</th><th class="align-center" width=120>น้ำหนัก(กก.)</th><th class="align-center" width=120>ความเร่งด่วน</th><th class="align-center" width=175>นำไปจัดสายช่วงเช้า</th><th class="align-center" width=175>นำไปจัดสายช่วงบ่าย</th></tr></thead><tfoot><tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot><tbody>';
+                    if (showedList.length != data.length) {
+                        var ids = '';
+                        var priorities = '';
+                        for (let j = 0; j < data.length; j++) {
+                            if (showedList.indexOf(j) == -1) {
+                                var queue = data[j];
+                                if (queue.limitation) {
+                                    var list = queue.limitation.split("/");
+                                    var thisDay = daysEN[i]
+                                    if ((list.indexOf(thisDay + Math.floor(hourNow/4)) == -1 || list.indexOf(thisDay + (Math.floor(hourNow/4) + 1)) == -1) || queue.priority == 4 )  {
+                                        queuesHtml = queuesHtml + '<input class="display-none" name="location_' + queue.id + '" type="text" value="' + queue.location_lat + ',' + queue.location_lon + '"><tr><td>'+ queue.customer_name +'</td>';
+                                        queuesHtml = queuesHtml + '<td>'+ queue.branch_name +'</td>';
+                                        queuesHtml = queuesHtml + '<td>'+ queue.product_name +'</td>';
+                                        queuesHtml = queuesHtml + '<td class="align-center">'+ queue.amount_in_bottle +'</td>';
+                                        queuesHtml = queuesHtml + '<td class="align-center">'+ Math.ceil(queue.amount_in_bottle * queue.weight_per_bottle) +'</td>';
+                                        queuesHtml = queuesHtml + '<td class="align-center">'+ queue.priority +'</td>';
+                                        if (list.indexOf(thisDay + '1') == -1 || queue.priority == 4) {
+                                            queuesHtml = queuesHtml + '<td class="align-center checkbox big"><input type="checkbox" value="0" name="time_' + queue.id + '"></td>';
+                                        } else {
+                                            queuesHtml = queuesHtml + '<td class="align-center checkbox big"><input type="checkbox" value="0" name="time_' + queue.id + '" disabled></td>';
+                                        }
+                                        if (list.indexOf(thisDay + '2') == -1 || queue.priority == 4) {
+                                            queuesHtml = queuesHtml + '<td class="align-center checkbox big"><input type="checkbox" value="1" name="time_' + queue.id + '"></td>';
+                                        } else {
+                                            queuesHtml = queuesHtml + '<td class="align-center checkbox big"><input type="checkbox" value="1" name="time_' + queue.id + '" disabled></td>';
+                                        }
+                                        queuesHtml = queuesHtml + '</tr>';
+                                        ids = ids + queue.id + ',';
+                                        priorities = priorities + queue.priority + ',';
+                                        showedList.push(j);
+                                    }
+                                } else {
+                                    queuesHtml = queuesHtml + '<input class="display-none" name="location_' + queue.id + '" type="text" value="' + queue.location_lat + ',' + queue.location_lon + '"><tr><td>'+ queue.customer_name +'</td>';
+                                    queuesHtml = queuesHtml + '<td>'+ queue.branch_name +'</td>';
+                                    queuesHtml = queuesHtml + '<td>'+ queue.product_name +'</td>';
+                                    queuesHtml = queuesHtml + '<td class="align-center">'+ queue.amount_in_bottle +'</td>';
+                                    queuesHtml = queuesHtml + '<td class="align-center">'+ Math.ceil(queue.amount_in_bottle * queue.weight_per_bottle) +'</td>';
+                                    queuesHtml = queuesHtml + '<td class="align-center">'+ queue.priority +'</td>';
+                                    queuesHtml = queuesHtml + '<td class="align-center checkbox big"><input type="checkbox" value="0" name="time_' + queue.id + '"></td>';
+                                    queuesHtml = queuesHtml + '<td class="align-center checkbox big"><input type="checkbox" value="1" name="time_' + queue.id + '"></td></tr>';
+                                    ids = ids + queue.id + ',';
+                                    priorities = priorities + queue.priority + ',';
+                                    showedList.push(j);
+                                }
+
+                            }
+                        }
+                        queuesHtml = queuesHtml + '</tbody></table><input class="display-none" name="id" type="text" value="' + ids.slice(0, -1) + '"><input class="display-none" name="priorities" type="text" value="' + priorities.slice(0, -1) + '">';
+                        if (i == dayNow) {
+                            queuesHtml = queuesHtml + '<div class="field cols align-right"><div class="field col-2" style="margin-top: 0px;"><label class="label right">จำนวนเที่ยวทั้งวัน</label></div><div class="field col-2" style="margin-top: 0px;"><input class="input col-2" name="rounds" type="number"></div><button class="button success button-float-right-margin-top" type="submit" style="margin-right:0.5rem;">จัดเส้นทาง</button><button class="button info button-float-right-margin-top" type="button" onclick="selectAll(' + i + ')">เลือกทั้งหมด</button></div></form>';
+                        }
+                        $('#delivery').append(queuesHtml);
+                    } else {
+                        queuesHtml = queuesHtml + '<tr><td>ไม่มี</td><td>ไม่มี</td><td>ไม่มี</td><td>ไม่มี</td><td>ไม่มี</td><td>ไม่มี</td><td>ไม่มี</td><td>ไม่มี</td></tr></tbody></table></form>';
+                        $('#delivery').append(queuesHtml);
                     }
-                    // else not data for show
+                    queuesHtml = '';
+                    hourNow = 4;
                 }
+                
                 
             }
             
@@ -48,21 +110,14 @@
                 var queues = <%- JSON.stringify(delivery_queues) %>;
                 var queue = {};
                 var data = JSON.parse(data);
-                var table = '<table class="table striped full-width first-col-center bordered hoverable"><thead><tr><th>ลูกค้า</th><th>สาขา</th><th>สินค้า</th><th width=120>จำนวน(ขวด)</th><th width=120>ความเร่งด่วน</th></tr></thead><tfoot><tr><th></th><th></th><th></th><th></th><th></th></tr></tfoot><tbody>';
                 for (let i = 0; i < data.length; i++) {
-                    if (data[i].length > 1) {
-                        for (let j = 0; j < data[i].length; j++) {
-                            queue = queues[data[i][j]];
-                            table = table + '<tr class="set-' + i + '">';
-                            table = table + '<td>'+ queue.customer_name +'</td>';
-                            table = table + '<td>'+ queue.branch_name +'</td>';
-                            table = table + '<td>'+ queue.product_name +'</td>';
-                            table = table + '<td>'+ queue.amount_in_bottle +'</td>';
-                            table = table + '<td>'+ queue.priority +'</td>';
-                            table = table + '</tr>';
+                    var table = '<table class="table striped full-width first-col-center bordered hoverable"><thead><tr><th>ลูกค้า</th><th>สาขา</th><th>สินค้า</th><th width=120>จำนวน(ขวด)</th><th width=120>ความเร่งด่วน</th></tr></thead><tfoot><tr><th></th><th></th><th></th><th></th><th></th></tr></tfoot><tbody>';
+                    for (let j = 0; j < data[i].length; j++) {
+                        for (let x = 0; x < queues.length; x++) {
+                            if (queues[x].id == data[i][j]) {
+                                queue = queues[x];
+                            }
                         }
-                    } else if (data[i].length != 0) {
-                        queue = queues[data[i][0]];
                         table = table + '<tr class="set-' + i + '">';
                         table = table + '<td>'+ queue.customer_name +'</td>';
                         table = table + '<td>'+ queue.branch_name +'</td>';
@@ -71,20 +126,20 @@
                         table = table + '<td>'+ queue.priority +'</td>';
                         table = table + '</tr>';
                     }
+                    table = table + '</tbody></table>';
+                    $('#result').append(table);
                 }
-                table = table + '</tbody></table>';
-                $('#result').html(table);
                 
             }
             
-            function setRoute() {
+            function setRoute(i) {
                 
                 $.ajax({
                     type: 'POST',
-                    data: $("form#delivery_queues").serialize(),
+                    data: $("form#delivery_queues_" + i).serialize(),
                     url: 'http://localhost:3000/routes/predict',
                     success: function(data) {
-                        getDate();
+//                        getDate();
                         showRoute(JSON.stringify(data));
                     }
                 });
@@ -101,54 +156,10 @@
                 <section class="section">
                     <div class="container">
                         <h1 class="title" style="margin-bottom: 10px;">จัดสายขนส่ง</h1>
-                        <form method="post" id="delivery_queues"  onsubmit="return setRoute()">
-                            <table class="table striped full-width first-col-center bordered hoverable">
-                                <thead>
-                                    <tr>
-                                        <th>ลูกค้า</th>
-                                        <th>สาขา</th>
-                                        <th>สินค้า</th>
-                                        <th width=120>จำนวน(ขวด)</th>
-                                        <th width=120>ความเร่งด่วน</th>
-                                        <th width=120>นำไปจัดสาย</th>
-                                    </tr>
-                                </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </tfoot>
-                                <tbody>
-                                    <% for(var i=0; i<delivery_queues.length; i++) {%>
-                                        <tr>
-                                            <td><%= delivery_queues[i].customer_name %></td>
-                                            <td><%= delivery_queues[i].branch_name %></td>
-                                            <td><%= delivery_queues[i].product_name %></td>
-                                            <td class="align-center"><%= delivery_queues[i].amount_in_bottle %></td>
-                                            <td class="align-center"><%= delivery_queues[i].priority %></td>
-                                            <td class="align-center checkbox big"><input type="checkbox" name="for_prediction" value="<%= delivery_queues[i].idbranch %>/<%= delivery_queues[i].location_lat %>/<%= delivery_queues[i].location_lon %>"></td>
-                                        </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                            <div class="field cols align-right">
-                                <div class="field col-2" style="margin-top: 0px;">
-                                    <label class="label right">จำนวนเที่ยว</label>
-                                </div>
-                                <div class="field col-2" style="margin-top: 0px;">
-                                    <input class="input col-2" name="rounds" type="number">
-                                </div>
-                                <button class="button success button-float-right-margin-top" type="sumbit">จัดเส้นทาง</button>
-                            </div>
-                        </form>
+                        <div id="delivery"></div>
                     </div>
                 </section>
-                <section class="section result-section" style="display: none;">
+                <section class="section result-section">
                     <div class="container">
                         <h1 class="title" style="margin-bottom: 10px;">ผลการจัดเส้นทาง</h1>
                         <div class="result-wrapper">

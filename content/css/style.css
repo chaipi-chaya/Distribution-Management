@@ -80,9 +80,11 @@
     text-align: right;
     justify-content: flex-end;
 }
-
-
-
+ 
+/* subtitle */
+.subtitle {
+    clear: both;
+}
 
 
 

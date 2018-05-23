@@ -18,7 +18,7 @@ module.exports = function(data, trucks, ids, times, priorities) {
                 res[i].time = time;
                 res[i].priority = priority;
             }
-
+            
             resolve(res);
         });
     });

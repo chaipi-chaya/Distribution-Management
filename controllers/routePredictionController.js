@@ -34,38 +34,140 @@ module.exports = function(app, con) {
             vectors[i] = [ data[i]['lat'] , data[i]['lon']];
         }
         
-        var result_id = [];
-        var result_con = [];
+        var results = [];
+        var move_list = [];
         var prediction = await predict(vectors, rounds, ids, times, priorities);
         for (let i = 0; i < prediction.length; i++) {
             var time = prediction[i].time;
             var id = prediction[i].id;
             var priority = prediction[i].priority;
-            var con = [];
-            if (time.indexOf("00") && time.indexOf("11")) {
+            var centroid = prediction[i].centroid;
+            var cluster = prediction[i].cluster;
+            var period = "";
+            var condition = [];
+            var move = {};
+            var result = {};
+            // have both morn and even
+            console.log(id);
+            console.log(time);
+            if (time.indexOf("0") && time.indexOf("11")) {
                 var morn = 0;
                 var even = 0
                 for (let j = 0; j < time.length; j++) {
-                    con.push(0);
-                    (time[j] == '00') ? morn++;
-                    (time[j] == '11') ? even++;
+                    condition.push(0);
+                    if (time[j] == '0') { morn++; }
+                    if (time[j] == '11') { even++; }
                 }
                 if (morn > even) {
+                    period = "morn";
                     while (time.indexOf('11') != -1) {
                         var index = time.indexOf('11');
-                        if (priority[index] != 4) {
-                            con[index] = 1;
-                        } else {
-                            con[index] = 999;
+                        if (priority[index] == 2) {
+                            condition[index] = 1;
+                            // drop move from id
+                            id.splice(index, 1);
+                            condition.splice(index, 1);
+                            cluster.splice(index, 1);
+                        } else if (priority[index] == 3) {
+                            condition[index] = 2;
+                            move.id = id[index];
+                            move.type = "mornToEven";
+                            move.cluster = cluster[index];
+                            move.condition = 2;
+                            move.priority = 3;
+                            // drop move from id
+                            id.splice(index, 1);
+                            condition.splice(index, 1);
+                            cluster.splice(index, 1);
+                        } else if (priority[index] == 4) {
+                            condition[index] = 999;
                         }
-                        
+                        move_list.push(move);
+                    }
+                } else if (even >= morn) {
+                    period = "even";
+                    while (time.indexOf('0') != -1) {
+                        var index = time.indexOf('0');
+                        if (priority[index] == 2) {
+                            condition[index] = 1;
+                            // drop move from id
+                            id.splice(index, 1);
+                            condition.splice(index, 1);
+                            cluster.splice(index, 1);
+                        } else if (priority[index] == 3) {
+                            condition[index] = 2;
+                            move.id = id[index];
+                            move.type = "evenToMorn";
+                            move.cluster = cluster[index];
+                            move.condition = 2;
+                            move.priority = 3;
+                            // drop move from id
+                            id.splice(index, 1);
+                            condition.splice(index, 1);
+                            cluster.splice(index, 1);
+                        } else if (priority[index] == 4) {
+                            condition[index] = 999;
+                        }
+                        move_list.push(move);
+                    }
+                    
+                }
+            // have only morn
+            } else if (time.indexOf("0")) {
+                period = "morn";
+            // have only even
+            } else if (time.indexOf("11")) {
+                period = "even";
+            // have both
+            } else if (time.indexOf("10")) {
+                period = "both";
+            }
+            // collect result
+            result.id = id;
+            result.condition = condition;
+            result.priority = priority;
+            result.centroid = centroid;
+            result.period = period;
+            results.push(result);
+        }
+        
+        // move condition == 2 to other list
+        for (let i = 0; i < move_list.length; i++) {
+            var move = move_list[i];
+            var cluster = move.cluster;
+            var moveToResultIndex = null;
+            var distance = 9999;
+            if (move.type == "mornToEven") {
+                for (let j = 0; j < results.length; j++) {
+                    if (results[i].period == "even" || results[i].period == "both") {
+                        var a = cluster[0] - results[i].centroid[0];
+                        var b = cluster[1] - results[i].centroid[1];
+                        var c = Math.sqrt( a*a + b*b );
+                        if (c < distance) {
+                            moveToResultIndex = j;
+                            distance = c;
+                        }
+                    }
+                }
+            } else if (move.type == "evenToMorn") {
+                for (let j = 0; j < results.length; j++) {
+                    if (results[i].period == "morn" || results[i].period == "both") {
+                        var a = cluster[0] - results[i].centroid[0];
+                        var b = cluster[1] - results[i].centroid[1];
+                        var c = Math.sqrt( a*a + b*b );
+                        if (c < distance) {
+                            moveToResultIndex = j;
+                            distance = c;
+                        }
                     }
                 }
             }
+            results[j].id.push(move.id);
+            results[j].priority.push(move.priority);
         }
         
-        console.log(prediction);
-        var results = [];
+        console.log(results);
+        console.log(move_list);
         res.send(results);
         
     });

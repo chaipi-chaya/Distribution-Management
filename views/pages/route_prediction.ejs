@@ -36,14 +36,17 @@
                 var dayNow = 3;
                 // var hourNow = time.getHours();
                 var hourNow = 7;
+                var trucks = <%- JSON.stringify(trucks) %>;
                 var queuesHtml = '';
                 var showedList = [];
                 var notShowedList = [];
                 for (let i = dayNow; i < daysEN.length; i++) {
-                    queuesHtml = queuesHtml + '<h2 class="subtitle" style="margin-bottom:5px;">วัน' + daysTH[i] + '</h2><form method="post" id="delivery_queues_' + i + '" onsubmit="return setRoute(' + i + ')"><table class="table table-' + i + ' striped full-width first-col-center bordered hoverable"><thead><tr><th>ลูกค้า</th><th>สาขา</th><th>สินค้า</th><th class="align-center" width=120>จำนวน(ขวด)</th><th class="align-center" width=120>น้ำหนัก(กก.)</th><th class="align-center" width=120>ความเร่งด่วน</th><th class="align-center" width=175>นำไปจัดสายช่วงเช้า</th><th class="align-center" width=175>นำไปจัดสายช่วงบ่าย</th></tr></thead><tfoot><tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot><tbody>';
+                    var sumWeight = 0;
+                    queuesHtml = queuesHtml + '<h2 class="subtitle" style="margin-bottom:5px;">วัน' + daysTH[i] + '</h2><form method="post" id="delivery_queues_' + i + '" onsubmit="return setRoute(' + i + ')"><table class="table table-' + i + ' striped full-width first-col-center bordered hoverable"><thead><tr><th width=180>ลูกค้า</th><th>สาขา</th><th width=150>สินค้า</th><th class="align-center" width=120>จำนวน(ขวด)</th><th class="align-center" width=120>น้ำหนัก(กก.)</th><th class="align-center" width=120>ความเร่งด่วน</th><th class="align-center" width=175>นำไปจัดสายช่วงเช้า</th><th class="align-center" width=175>นำไปจัดสายช่วงบ่าย</th></tr></thead><tfoot><tr><th></th><th></th><th></th><th></th><th class="sum-weight align-center"></th><th></th><th></th><th></th></tr></tfoot><tbody>';
                     if (showedList.length != data.length) {
                         var ids = '';
                         var priorities = '';
+                        var weights = '';
                         for (let j = 0; j < data.length; j++) {
                             if (showedList.indexOf(j) == -1) {
                                 var queue = data[j];
@@ -56,6 +59,7 @@
                                         queuesHtml = queuesHtml + '<td>'+ queue.product_name +'</td>';
                                         queuesHtml = queuesHtml + '<td class="align-center">'+ queue.amount_in_bottle +'</td>';
                                         queuesHtml = queuesHtml + '<td class="align-center">'+ Math.ceil(queue.amount_in_bottle * queue.weight_per_bottle) +'</td>';
+                                        sumWeight += Math.ceil(queue.amount_in_bottle * queue.weight_per_bottle) 
                                         queuesHtml = queuesHtml + '<td class="align-center">'+ queue.priority +'</td>';
                                         if (list.indexOf(thisDay + '1') == -1 || queue.priority == 4) {
                                             queuesHtml = queuesHtml + '<td class="align-center checkbox big"><input type="checkbox" value="0" name="time_' + queue.id + '"></td>';
@@ -70,6 +74,7 @@
                                         queuesHtml = queuesHtml + '</tr>';
                                         ids = ids + queue.id + ',';
                                         priorities = priorities + queue.priority + ',';
+                                        weights = weights + Math.ceil(queue.amount_in_bottle * queue.weight_per_bottle)  + ',';
                                         showedList.push(j);
                                     }
                                 } else {
@@ -78,30 +83,91 @@
                                     queuesHtml = queuesHtml + '<td>'+ queue.product_name +'</td>';
                                     queuesHtml = queuesHtml + '<td class="align-center">'+ queue.amount_in_bottle +'</td>';
                                     queuesHtml = queuesHtml + '<td class="align-center">'+ Math.ceil(queue.amount_in_bottle * queue.weight_per_bottle) +'</td>';
+                                    sumWeight += Math.ceil(queue.amount_in_bottle * queue.weight_per_bottle)
                                     queuesHtml = queuesHtml + '<td class="align-center">'+ queue.priority +'</td>';
                                     queuesHtml = queuesHtml + '<td class="align-center checkbox big"><input type="checkbox" value="0" name="time_' + queue.id + '"></td>';
                                     queuesHtml = queuesHtml + '<td class="align-center checkbox big"><input type="checkbox" value="1" name="time_' + queue.id + '"></td></tr>';
                                     ids = ids + queue.id + ',';
                                     priorities = priorities + queue.priority + ',';
+                                    weights = weights + Math.ceil(queue.amount_in_bottle * queue.weight_per_bottle)  + ',';
                                     showedList.push(j);
                                 }
 
                             }
                         }
-                        queuesHtml = queuesHtml + '</tbody></table><input class="display-none" name="id" type="text" value="' + ids.slice(0, -1) + '"><input class="display-none" name="priorities" type="text" value="' + priorities.slice(0, -1) + '">';
+                        queuesHtml = queuesHtml + '</tbody></table><input class="display-none" name="id" type="text" value="' + ids.slice(0, -1) + '"><input class="display-none" name="priorities" type="text" value="' + priorities.slice(0, -1) + '"><input class="display-none" name="weights" type="text" value="' + weights.slice(0, -1) + '">';
                         if (i == dayNow) {
-                            queuesHtml = queuesHtml + '<div class="field cols align-right"><div class="field col-2" style="margin-top: 0px;"><label class="label right">จำนวนเที่ยวทั้งวัน</label></div><div class="field col-2" style="margin-top: 0px;"><input class="input col-2" name="rounds" type="number"></div><button class="button success button-float-right-margin-top" type="submit" style="margin-right:0.5rem;">จัดเส้นทาง</button><button class="button info button-float-right-margin-top" type="button" onclick="selectAll(' + i + ')">เลือกทั้งหมด</button></div></form>';
+                            queuesHtml = queuesHtml + '<div class="field cols align-right"><div class="field col-2" style="margin-top: 0px;"><label class="label right">จำนวนเที่ยวเพิ่มพิเศษ</label></div><div class="field col-2" style="margin-top: 0px;"><input class="input col-2" name="extrarounds" type="number" value="0"></div><button class="button info button-float-right-margin-top" style="margin-right: 0.5rem;" type="button" onclick="selectAll(' + i + ')">เลือกทั้งหมด</button></div><div class="cols"><div class="col-6"><h2 class="subtitle col-6" style="margin-bottom: 10px; margin-top: 10px; padding-left: 0px;">เลือกรถ</h2></div><div class="col-6"><div class="cols align-right"><div class="field col-10" style="margin-top:1rem;"><div class="select"><select id="idtruck" required><option class="truck-default" value="" selected>เลือกรถขนส่ง</option>';
+                            for (let i = 0; i < trucks.length; i++)  {
+                                queuesHtml = queuesHtml + '<option value="' + trucks[i].idtruck + '">' + trucks[i].type + '</option>';
+                            }
+                            queuesHtml = queuesHtml + '</select></div></div><button class="button info button-float-right-margin-top" onclick="addTrucks()" style="margin-top:1.5rem;"  type="button">เพิ่มรถ</button></div></div><div class="col-12"><div id="trucks" style="width: 100%;"></div></div></div><button class="button success button-float-right-margin-top" type="submit">จัดเส้นทาง</button></form><hr style="margin-top: 65px; border: 1px solid #343D46;">';
                         }
                         $('#delivery').append(queuesHtml);
                     } else {
                         queuesHtml = queuesHtml + '<tr><td>ไม่มี</td><td>ไม่มี</td><td>ไม่มี</td><td>ไม่มี</td><td>ไม่มี</td><td>ไม่มี</td><td>ไม่มี</td><td>ไม่มี</td></tr></tbody></table></form>';
+                        sumWeight = "ไม่มี";
                         $('#delivery').append(queuesHtml);
                     }
                     queuesHtml = '';
                     hourNow = 4;
+                    $('.table-' + i + ' tfoot th.sum-weight').html(sumWeight);
                 }
                 
                 
+            }
+            
+            function addTrucks() {
+                var trucks = <%- JSON.stringify(trucks) %>;
+                var id = document.getElementById("idtruck").value;
+                var ids = '';
+                var table = document.getElementById("table-trucks");
+                var sumCapacity = 0;
+                if (table == null) {
+                    var table = '<table id="table-trucks" class="table striped full-width first-col-center bordered hoverable"><thead><tr><th>ประเภท</th><th width=220 class="align-center">น้ำหนักบรรทุกสูงสุด(กก.)</th><th width=150 class="align-center">ทะเบียน</th><th class="align-center" width=150></th></tr></thead><tfoot><tr><th>รวม</th><th class="sum-capacity align-center"></th><th></th><th></th></tr></tfoot><tbody>';
+                    for (let i = 0; i < trucks.length; i++) {
+                        if (trucks[i].idtruck == id) {
+                            table = table + '<tr class="truck-' + id + '">';
+                            table = table + '<td>' + trucks[i].type + '<input class="display-none" name="truck_' + trucks[i].idtruck + '" value="' + trucks[i].maxcapacity_in_kilo + '"></td>';
+                            table = table + '<td class="align-center cap">' + trucks[i].maxcapacity_in_kilo + '</td>';
+                            table = table + '<td class="align-center">' + trucks[i].license_plate + '</td>';
+                            table = table + '<td class="align-center"><button class="button danger" onclick="removeTrucks(' + id + ')">เอาออก</button></td></tr>';
+                            sumCapacity += trucks[i].maxcapacity_in_kilo;
+                            ids = ids + id + ',';
+                        }
+                    }
+                    table = table + '</tbody></table><input id="idtrucks" class="display-none" name="idtrucks" type="text" value="' + ids.slice(0, -1) + '">';
+                    $('#trucks').append(table);
+                    $('#table-trucks tfoot th.sum-capacity').html(sumCapacity);
+                } else {
+                    sumCapacity = parseInt($('#table-trucks tfoot th.sum-capacity').html());
+                    ids = $('#idtrucks').val() + ',';
+                    for (let i = 0; i < trucks.length; i++) {
+                        if (trucks[i].idtruck == id) {
+                            var row = '<tr class="truck-' + id + '">';
+                            row = row + '<td>' + trucks[i].type + '<input class="display-none" name="truck_' + trucks[i].idtruck + '" value="' + trucks[i].maxcapacity_in_kilo + '"></td>';
+                            row = row + '<td class="align-center cap">' + trucks[i].maxcapacity_in_kilo + '</td>';
+                            row = row + '<td class="align-center">' + trucks[i].license_plate + '</td>';
+                            row = row + '<td class="align-center"><button class="button danger" onclick="removeTrucks(' + id + ')">เอาออก</button></td></tr>';
+                            sumCapacity += trucks[i].maxcapacity_in_kilo;
+                            ids = ids + id + ',';
+                        }
+                    }
+                    $('#idtrucks').val(ids.slice(0, -1));
+                    $('#table-trucks tbody').append(row);
+                    $('#table-trucks tfoot th.sum-capacity').html(sumCapacity);
+                }
+            }
+            
+            function removeTrucks(id) {                    
+                var sumCapacity = parseInt($('#table-trucks tfoot th.sum-capacity').html());
+                var ids = $('#idtrucks').val().split(',');
+                if (ids.indexOf(id.toString()) != -1) {
+                    ids.splice(ids.indexOf(id.toString()), 1);
+                }
+                $('#table-trucks tfoot th.sum-capacity').html(sumCapacity - parseInt($('#table-trucks tbody tr.truck-' + id + ' td.cap').html()));
+                $('#table-trucks tbody tr.truck-' + id).remove();
+                $('#idtrucks').val(ids.join(','));
             }
             
             function showRoute(data) {
@@ -110,24 +176,51 @@
                 var queues = <%- JSON.stringify(delivery_queues) %>;
                 var queue = {};
                 var data = JSON.parse(data);
+                var periods = {morn: 'ช่วงเช้า', even: 'ช่วงบ่าย', both: 'ช่วงเช้าหรือบ่าย', nan: 'ไม่มี'};
+                var rounds = {morn: ['ช่วงเช้า'], even: ['ช่วงบ่าย'], both: ['ช่วงเช้า', 'ช่วงบ่าย'], bothValue: ['morn', 'even'], mornValue: ['morn'], evenValue: ['even']};
                 for (let i = 0; i < data.length; i++) {
-                    var table = '<table class="table striped full-width first-col-center bordered hoverable"><thead><tr><th>ลูกค้า</th><th>สาขา</th><th>สินค้า</th><th width=120>จำนวน(ขวด)</th><th width=120>ความเร่งด่วน</th></tr></thead><tfoot><tr><th></th><th></th><th></th><th></th><th></th></tr></tfoot><tbody>';
-                    for (let j = 0; j < data[i].length; j++) {
+                    var period = data[i].period
+                    var table = '<h2 class="subtitle subtitle-' + i + '">' + periods[period] + '</h2><div class="map map-' + data[i].period + '" id="map' + i + '"></div><table class="table striped full-width first-col-center bordered hoverable"><thead><tr><th width=180>ลูกค้า</th><th>สาขา</th><th class="align-center" width=150>สินค้า</th><th width=120 class="align-center">จำนวน(ขวด)</th><th width=120 class="align-center">ความเร่งด่วน</th><th width=100 class="align-center"></th></tr></thead><tfoot><tr><th></th><th></th><th></th><th></th><th></th><th></th></tr></tfoot><tbody>';
+                    var positions = [];
+                    for (let j = 0; j < data[i].id.length; j++) {
+                        var id = data[i].id;
                         for (let x = 0; x < queues.length; x++) {
-                            if (queues[x].id == data[i][j]) {
+                            if (queues[x].id == id[j]) {
                                 queue = queues[x];
+                                positions.push({lat: queue.location_lat, lng: queue.location_lon});
+                                table = table + '<tr class="set-' + i + '">';
+                                table = table + '<td>'+ queue.customer_name +'</td>';
+                                table = table + '<td>'+ queue.branch_name +'</td>';
+                                table = table + '<td>'+ queue.product_name +'</td>';
+                                table = table + '<td class="align-center">'+ queue.amount_in_bottle +'</td>';
+                                table = table + '<td class="align-center">'+ queue.priority +'</td>';
+                                table = table + '<td class="align-center"><button class="button danger">ลบ</button></td>';
+                                table = table + '</tr>';
                             }
                         }
-                        table = table + '<tr class="set-' + i + '">';
-                        table = table + '<td>'+ queue.customer_name +'</td>';
-                        table = table + '<td>'+ queue.branch_name +'</td>';
-                        table = table + '<td>'+ queue.product_name +'</td>';
-                        table = table + '<td>'+ queue.amount_in_bottle +'</td>';
-                        table = table + '<td>'+ queue.priority +'</td>';
-                        table = table + '</tr>';
                     }
                     table = table + '</tbody></table>';
-                    $('#result').append(table);
+                    
+                    if (period != 'nan') {
+                        table = table + '<div class="field cols align-right"><div class="field col-2" style="margin-top: 0px;"><div class="select"><select class="round" name="round" required>';
+                        table = table + '<option class="round-default" value="" selected>เลือกรอบการส่ง</option>';
+                        for (let j = 0; j < rounds[period].length; j++)  {
+                            table = table + "<option value=" + rounds[period + 'Value'][j] + ">" + rounds[period][j] + "</option>";
+                        }
+                        table = table + '</select></div></div><button class="button-send-' + i + ' button success button-float-right-margin-top" style="margin-right:0.5rem;" onClick="removeFromQueues(i)">จัดส่ง</button><button class="button-add-' + i + ' button info button-float-right-margin-top">เพิ่มคิวจัดส่ง</button></div>';
+                        $('#result').append(table);
+
+                        var map = new google.maps.Map(document.getElementById( 'map' + i ), {
+                          zoom: 10,
+                          center: {lat: 13.756933, lng: 100.501506}
+                        });
+                        
+                        for (let j = 0; j < positions.length; j++) {
+                            new google.maps.Marker({position: positions[j], map: map});
+                        }
+                        
+                    }
+                    
                 }
                 
             }
@@ -139,7 +232,6 @@
                     data: $("form#delivery_queues_" + i).serialize(),
                     url: 'http://localhost:3000/routes/predict',
                     success: function(data) {
-//                        getDate();
                         showRoute(JSON.stringify(data));
                     }
                 });
@@ -174,4 +266,6 @@
     <script>
         showQueue(<%- JSON.stringify(delivery_queues) %>);
     </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIErmzM5mJqaM_VveVuNP4Ng5iZ9MhbNU"
+  type="text/javascript"></script>
 </html>

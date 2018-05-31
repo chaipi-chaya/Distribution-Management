@@ -369,7 +369,7 @@ module.exports = function(app, con) {
                 nextDayList.push(nextDay);
             }
         }
-        res.send(fin);
+        res.send([fin,nextDayList]);
         
     });
     

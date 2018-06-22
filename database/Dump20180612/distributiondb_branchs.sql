@@ -1,0 +1,56 @@
+-- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+--
+-- Host: localhost    Database: distributiondb
+-- ------------------------------------------------------
+-- Server version	5.7.21-log
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `branchs`
+--
+
+DROP TABLE IF EXISTS `branchs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `branchs` (
+  `location_lat` float NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idbranch` int(11) DEFAULT NULL,
+  `idcustomer` int(11) NOT NULL,
+  `location_lon` float NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `limitation` varchar(110) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `branchs`
+--
+
+LOCK TABLES `branchs` WRITE;
+/*!40000 ALTER TABLE `branchs` DISABLE KEYS */;
+INSERT INTO `branchs` VALUES (13.7363,4,1,2,100.561,'สำนักงานใหญ่',NULL),(13.674,10,NULL,2,100.348,'บางปะกอก',NULL),(13.874,11,NULL,2,100.125,'พระรามสอง',NULL),(13.6114,90,1,5,100.594,'โรงงาน',NULL),(13.7479,91,1,1,100.653,'กรุงเทพกรีฑา 48','MON2/MON3/TUE2/TUE3/WED2/WED3/THU2/THU3/FRI1/FRI2/FRI3/SAT2/SAT3'),(13.7918,93,3,1,100.292,'ขนส่งสายห้า','MON1/MON2/MON3/TUE2/TUE3/WED1/WED2/WED3/THU3/FRI1/FRI2/FRI3/SAT3'),(13.6916,94,1,3,100.48,'โรงงาน',NULL),(13.7584,95,1,4,100.471,'จรัญ',NULL),(13.6693,96,2,4,100.455,'เดอะ บรีช',NULL),(13.732,97,1,6,100.57,'Emquatier',NULL),(13.8552,98,2,6,100.542,'งามวงศ์วาน',NULL),(13.7133,99,3,6,100.48,'ท่าพระ',NULL),(13.7135,100,4,6,100.408,'บางแค',NULL);
+/*!40000 ALTER TABLE `branchs` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-06-12  6:50:15

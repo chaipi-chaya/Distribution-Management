@@ -32,10 +32,10 @@
                 var daysTH = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
                 var daysEN = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
                 var time = new Date();
-                // var dayNow = time.getDay();
-                var dayNow = 3;
-                // var hourNow = time.getHours();
-                var hourNow = 7;
+                var dayNow = time.getDay();
+                // var dayNow = 3;
+                var hourNow = time.getHours();
+                // var hourNow = 7;
                 var trucks = <%- JSON.stringify(trucks) %>;
                 var queuesHtml = '';
                 var showedList = [];
